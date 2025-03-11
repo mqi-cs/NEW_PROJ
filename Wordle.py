@@ -1,4 +1,3 @@
-
 import pygame  #importing required libraries
 
 pygame.init()           #initialising pygame
@@ -22,9 +21,22 @@ screen = pygame.display.set_mode((screen_width,screen_height))   #initialising d
 pygame.display.set_caption("Wordle Variant")           #window name
  
 def draw_grid():    #function to draw grid
+    # Calculate cell size based on available space
+    available_width = screen_width - (2 * margin)
+    available_height = screen_height - (2 * margin)
+
+    cell_width = available_width // Wordle_Columns
+    cell_height = available_height // Wordle_rows
+
+    # Calculate starting position to center the grid
+    start_x = margin
+    start_y = margin
+
     for c in range(Wordle_Columns):
         for r in range(Wordle_rows):
-            pygame.draw.rect(screen, White, ((c*100)+margin, (r*100)+margin, 100, 100), 2)  # (x , y cooridnates, width, height, thickness)
+            x = start_x + (c * cell_width)
+            y = start_y + (r * cell_height)
+            pygame.draw.rect(screen, White, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
 
 
 
