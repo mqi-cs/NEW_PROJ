@@ -15,7 +15,7 @@ Grey = (128, 128, 128)
 Wordle_Columns = 5   # dimesnions for wordle grid
 Wordle_rows = 6
 
-margin = 100
+margin = 100         #margin so gap between edges of screen and grid
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
 
@@ -24,7 +24,7 @@ pygame.display.set_caption("Wordle Variant")           #window name
 def draw_grid():    #function to draw grid
     for c in range(Wordle_Columns):
         for r in range(Wordle_rows):
-            pygame.draw.rect(screen, White, ((c*100)+margin, (r*100)+margin, 100, 100), 2)  # (x , y cooridnates, width, height, thickness)
+            pygame.draw.rect(screen, White, ((c*100)+margin, (r*100), 100, 100), 2)  # (x , y cooridnates, width, height, thickness)
 
 
 
