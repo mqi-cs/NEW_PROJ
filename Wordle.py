@@ -2,7 +2,7 @@ import pygame  #importing required libraries
 
 pygame.init()           #initialising pygame
 
-screen_width,screen_height = 250,250    #variables for screen width and height.
+screen_width,screen_height = 400,400    #variables for screen width and height.
 
 # Define colours
 White = (255, 255, 255)
