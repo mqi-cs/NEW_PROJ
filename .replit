@@ -6,3 +6,14 @@ channel = "stable-24_05"
 
 [deployment]
 run = ["sh", "-c", "pip install pygame"]
+
+[workflows]
+runButton = "Run Wordle"
+
+[[workflows.workflow]]
+name = "Run Wordle"
+author = 38349318
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "python Wordle.py"
