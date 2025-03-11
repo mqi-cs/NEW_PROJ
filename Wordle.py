@@ -2,7 +2,7 @@ import pygame  #importing required libraries
 
 pygame.init()           #initialising pygame
 
-screen_width,screen_height = 700,1000    #variables for screen width and height
+screen_width,screen_height = 600,800    #variables for screen width and height
 
 # Define colours
 White = (255, 255, 255)
@@ -14,7 +14,7 @@ Grey = (128, 128, 128)
 Wordle_Columns = 5   # dimesnions for wordle grid
 Wordle_rows = 6
 
-margin = 100         #margin so gap between edges of screen and grid
+margin = 50         #margin so gap between edges of screen and grid
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
 
