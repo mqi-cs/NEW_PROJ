@@ -47,7 +47,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill(White)  # Fill the screen with black background
+    screen.fill(White)  # Fill the screen with white background
 
     draw_grid()  # Draw the grid
 
