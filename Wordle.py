@@ -21,14 +21,15 @@ screen = pygame.display.set_mode((screen_width,screen_height))   #initialising d
 pygame.display.set_caption("Wordle Variant")           #window name
  
 def draw_grid():    #function to draw grid
-    # Calculate cell size based on available space
+    
+    # Calculate cell size based on screen size
     available_width = screen_width - (2 * margin)
     available_height = screen_height - (2 * margin)
 
     cell_width = available_width // Wordle_Columns
     cell_height = available_height // Wordle_rows
 
-    # Calculate starting position to center the grid
+    # Calculate starting position for grid
     start_x = margin
     start_y = margin
 
