@@ -18,6 +18,9 @@ margin = 50         #margin so gap between edges of screen and grid
 
 input_font = pygame.font.Font(None, 50)  # Font for input text
 
+current_row = 0
+current_column = 0
+
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
 
 pygame.display.set_caption("Wordle Variant")           #window name
@@ -41,9 +44,13 @@ def draw_grid():    #function to draw grid
             y = start_y + (r * cell_height)
             pygame.draw.rect(screen, White, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
 
+            
 
 def draw_input():
 
+display_text = input_font.render("A", True, White)  # Render the text
+
+centered_text = display_text.get_rect(center=(screen_width // 2, screen_height // 2))  # Center the text
     
 
 
@@ -59,9 +66,16 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
+
+
+
+
+
+
     screen.fill(Black)  # Fill the screen with black background
 
     draw_grid()  # Draw the grid
+    draw_input()  # Draw the input
 
     pygame.display.flip()  # Update the screen
 
