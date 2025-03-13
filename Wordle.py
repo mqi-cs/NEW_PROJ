@@ -48,9 +48,9 @@ def draw_grid():    #function to draw grid
 
 def draw_input():
 
-display_text = input_font.render("A", True, White)  # Render the text
+    display_text = input_font.render("A", True, White)  # Render the text
 
-centered_text = display_text.get_rect(center=(screen_width // 2, screen_height // 2))  # Center the text
+    centered_text = display_text.get_rect(center=(screen_width // 2,             screen_height // 2))  # Center the text
     
 
 
