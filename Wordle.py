@@ -1,4 +1,6 @@
 import pygame  #importing required libraries
+import string  #import alphabet for key input handling
+
 
 pygame.init()           #initialising pygame
 
@@ -20,6 +22,10 @@ input_font = pygame.font.Font(None, 50)  # Font for input text
 
 current_row = 0
 current_column = 0
+
+ #List of all alphabet keys
+alphabet_keys = {getattr(pygame, f"K_{letter}"): letter for letter in string.ascii_lowercase}
+
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
 
@@ -57,8 +63,11 @@ def draw_input(x,y):
 
 
 
+def input_condition():
+    if event.key in alphabet_keys:
+        ###
 
-
+    elif event.key == pygame.K_BACKSPACE:  # Handle backspace
 
 
 
@@ -67,10 +76,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
-
-
-
 
 
 
