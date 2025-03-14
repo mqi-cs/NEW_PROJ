@@ -58,7 +58,7 @@ def draw_grid():    #function to draw grid
             draw_input(text_x, text_y)
             
 
-def draw_input(input,x,y):
+def draw_input(input,x=text_x,y=text_y):  
     display_text = input_font.render(input, True, White)  # Render the text
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
     screen.blit(display_text, centered_text)  # Draw the text on screen
@@ -66,10 +66,10 @@ def draw_input(input,x,y):
 
 
 def input_condition():
-    if event.key in alphabet_keys:
+    elif event.key in alphabet_keys:
         draw_input(alphabet_keys[event.key])
         counter += 1
-    
+
 
     elif event.key == pygame.K_BACKSPACE:  # Handle backspace
         counter -= 1
@@ -94,12 +94,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-
+        counter_condition()
 
     screen.fill(Black)  # Fill the screen with black background
 
     draw_grid()  # Draw the grid
 
+    counter_condition()
 
     pygame.display.flip()  # Update the screen
 
