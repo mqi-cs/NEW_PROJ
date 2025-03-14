@@ -44,18 +44,16 @@ def draw_grid():    #function to draw grid
             y = start_y + (r * cell_height)
             pygame.draw.rect(screen, White, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
 
-            text_x = x + (0.5*x)
-            text_y = y - (0.5*y)
-            draw_input(text_x,text_y)
+            # Calculate center of the cell
+            text_x = x + (cell_width // 2)
+            text_y = y + (cell_height // 2)
+            draw_input(text_x, text_y)
             
 
 def draw_input(x,y):
-
     display_text = input_font.render("A", True, White)  # Render the text
-
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
-
-    screen.blit(display_text, centered_text)  # Actually draw the text on screen
+    screen.blit(display_text, centered_text)  # Draw the text on screen
 
 
 
