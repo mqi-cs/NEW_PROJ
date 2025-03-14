@@ -52,8 +52,13 @@ def draw_grid():    #function to draw grid
 
 def draw_input(x,y):
     display_text = input_font.render("A", True, White)  # Render the text
+<<<<<<< HEAD
+
+    centered_text = display_text.get_rect(center=(x,y))  # text coordinates
+=======
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
     screen.blit(display_text, centered_text)  # Draw the text on screen
+>>>>>>> 5f03a2ce5d2d03cc0663f104a61771ba7f30b286
 
 
 
