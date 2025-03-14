@@ -20,8 +20,10 @@ margin = 50         #margin so gap between edges of screen and grid
 
 input_font = pygame.font.Font(None, 50)  # Font for input text
 
-current_row = 0
-current_column = 0
+current_row = 0               # where to add text input
+current_column = 0  
+
+counter = 0                                              
 
  #List of all alphabet keys
 alphabet_keys = {getattr(pygame, f"K_{letter}"): letter for letter in string.ascii_lowercase}
@@ -56,8 +58,8 @@ def draw_grid():    #function to draw grid
             draw_input(text_x, text_y)
             
 
-def draw_input(x,y):
-    display_text = input_font.render("A", True, White)  # Render the text
+def draw_input(input,x,y):
+    display_text = input_font.render(input, True, White)  # Render the text
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
     screen.blit(display_text, centered_text)  # Draw the text on screen
 
@@ -65,9 +67,24 @@ def draw_input(x,y):
 
 def input_condition():
     if event.key in alphabet_keys:
-        ###
+        draw_input(alphabet_keys[event.key])
+        counter += 1
+    
 
     elif event.key == pygame.K_BACKSPACE:  # Handle backspace
+        counter -= 1
+
+
+def counter_condition():
+    if counter == 5:
+        current_row += 1
+        current_column = 0
+        counter = 0
+    elif current_row == 6:
+        print("Game Over")
+        running = False
+    else:
+        current_column += 1
 
 
 
