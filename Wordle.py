@@ -43,7 +43,10 @@ def draw_grid():    #function to draw grid
             x = start_x + (c * cell_width)
             y = start_y + (r * cell_height)
             pygame.draw.rect(screen, White, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
-            draw_input(x,y)
+
+            text_x = x + 0.5x
+            text_y = y - 0.5y
+            draw_input(text_x,text_y)
             
 
 def draw_input(x,y):
