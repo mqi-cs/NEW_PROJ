@@ -36,6 +36,7 @@ screen = pygame.display.set_mode((screen_width,screen_height))   #initialising d
 
 pygame.display.set_caption("Wordle Variant")           #window name
  
+
 def draw_grid():    #function to draw grid
     
     # Calculate cell size based on screen size
@@ -64,9 +65,9 @@ def draw_grid():    #function to draw grid
             draw_input(letter,text_x, text_y)
             
 
-def draw_input(input,x,y):  
+def draw_input(letter,x,y):  
 
-    display_text = input_font.render(input, True, white)  # Render the text
+    display_text = input_font.render(letter, True, white)  # Render the text
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
     screen.blit(display_text, centered_text)  # Draw the text on screen
 
@@ -83,7 +84,7 @@ def input_condition(event):
 
     elif event.key in alphabet_keys:      # Handle alphabet key input
 
-        guess_list[current_row][current_column] = alphabet_keys[event.key]
+        guess_list[current_row][counter] = alphabet_keys[event.key]
 
         draw_grid()
         counter += 1
@@ -92,12 +93,12 @@ def input_condition(event):
     elif event.key == pygame.K_BACKSPACE:  # Handle backspace
 
         if current_column > 0:
-            current_column -= 1
+            counter -= 1
 
-        guess_list[current_row][current_column] = ""
+            guess_list[current_row][current_column] = ""
 
-        draw_grid()
-        counter += 1
+            draw_grid()
+            counter += 1
 
 
 
@@ -105,13 +106,17 @@ def counter_condition():
 
     global current_row, current_column, counter, running
 
+    
+
     if counter == 5:
         current_row += 1
         current_column = 0
         counter = 0
-    elif current_row == 6:
+
+    elif current_row >= wordle_rows:
         print("Game Over")
         running = False
+
 
 
 
