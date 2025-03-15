@@ -98,7 +98,7 @@ def input_condition(event):
             counter -= 1  # Move back to the previous column
 
             guess_list[current_row][counter] = ""  # Clear the current letter
-            
+
             draw_grid()  # Only redraw the grid after backspace is handled
 
 
@@ -121,13 +121,13 @@ def counter_condition():
 
 
 
-
-
 running = True                    #main loop allowing to exit app
 while running:
     for event in pygame.event.get():
         
-        input_condition(event)
+        if event.type == pygame.KEYDOWN:
+
+            input_condition(event)
 
     screen.fill(black)  # Fill the screen with black background
 
