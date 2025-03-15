@@ -33,7 +33,7 @@ screen = pygame.display.set_mode((screen_width,screen_height))   #initialising d
 
 pygame.display.set_caption("Wordle Variant")           #window name
  
-def draw_grid():    #function to draw grid
+def draw_grid(input):    #function to draw grid
     
     # Calculate cell size based on screen size
     available_width = screen_width - (2 * margin)
@@ -55,10 +55,10 @@ def draw_grid():    #function to draw grid
             # Calculate center of the cell
             text_x = x + (cell_width // 2)
             text_y = y + (cell_height // 2)
-            draw_input(text_x, text_y)
+            draw_input(input,text_x, text_y)
             
 
-def draw_input(input,x=text_x,y=text_y):  
+def draw_input(input,x,y):  
     display_text = input_font.render(input, True, White)  # Render the text
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
     screen.blit(display_text, centered_text)  # Draw the text on screen
@@ -66,8 +66,13 @@ def draw_input(input,x=text_x,y=text_y):
 
 
 def input_condition():
+
+    if event.type == pygame.QUIT:
+        running = False
+
     elif event.key in alphabet_keys:
-        draw_input(alphabet_keys[event.key])
+
+        draw_grid(alphabet_keys[event.key])
         counter += 1
 
 
@@ -91,10 +96,10 @@ def counter_condition():
 running = True                    #main loop allowing to exit app
 while running:
     for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
-
+        
+        input_condition()
         counter_condition()
+
 
     screen.fill(Black)  # Fill the screen with black background
 
