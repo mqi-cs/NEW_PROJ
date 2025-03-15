@@ -106,7 +106,6 @@ while running:
     for event in pygame.event.get():
         
         input_condition(event)
-        draw_grid(event)  # Draw the grid
 
     screen.fill(Black)  # Fill the screen with black background
 
