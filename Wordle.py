@@ -55,6 +55,7 @@ def draw_grid(input):    #function to draw grid
             # Calculate center of the cell
             text_x = x + (cell_width // 2)
             text_y = y + (cell_height // 2)
+
             draw_input(input,text_x, text_y)
             
 
@@ -65,7 +66,11 @@ def draw_input(input,x,y):
 
 
 
-def input_condition():
+def input_condition(event):
+
+    global running, counter
+
+    counter_condition()
 
     if event.type == pygame.QUIT:
         running = False
@@ -81,6 +86,9 @@ def input_condition():
 
 
 def counter_condition():
+
+    global current_row, current_column, counter, running
+
     if counter == 5:
         current_row += 1
         current_column = 0
@@ -97,15 +105,13 @@ running = True                    #main loop allowing to exit app
 while running:
     for event in pygame.event.get():
         
-        input_condition()
-        counter_condition()
-
+        input_condition(event)
+        draw_grid(event)  # Draw the grid
 
     screen.fill(Black)  # Fill the screen with black background
 
-    draw_grid()  # Draw the grid
 
-    counter_condition()
+
 
     pygame.display.flip()  # Update the screen
 
