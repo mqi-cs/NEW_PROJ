@@ -59,9 +59,9 @@ def draw_grid():    #function to draw grid
             text_x = x + (cell_width // 2)
             text_y = y + (cell_height // 2)
 
-            input = guess_list[r][c]
+            letter = guess_list[r][c]
 
-            draw_input(input,text_x, text_y)
+            draw_input(letter,text_x, text_y)
             
 
 def draw_input(input,x,y):  
@@ -91,10 +91,14 @@ def input_condition(event):
 
     elif event.key == pygame.K_BACKSPACE:  # Handle backspace
 
-        guess_list[current_row][current_column] = ""
-        draw_grid()
+        if current_column > 0:
+            current_column -= 1
 
-        counter -= 1
+        guess_list[current_row][current_column] = ""
+
+        draw_grid()
+        counter += 1
+
 
 
 def counter_condition():
@@ -108,8 +112,7 @@ def counter_condition():
     elif current_row == 6:
         print("Game Over")
         running = False
-    else:
-        current_column += 1
+
 
 
 
