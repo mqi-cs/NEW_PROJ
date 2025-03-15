@@ -82,23 +82,25 @@ def input_condition(event):
     if event.type == pygame.QUIT:
         running = False
 
-    elif event.key in alphabet_keys:      # Handle alphabet key input
+    elif event.key in alphabet_keys:  # Handle alphabet key input
 
-        guess_list[current_row][counter] = alphabet_keys[event.key]
+        guess_list[current_row][counter] = alphabet_keys[event.key]  # Use counter for column index
 
-        draw_grid()
-        counter += 1
+        counter += 1  # Move to the next column (i.e., increment the counter)
+
+        draw_grid()  # Only redraw the grid after input is handled
 
 
     elif event.key == pygame.K_BACKSPACE:  # Handle backspace
 
         if current_column > 0:
-            counter -= 1
 
-            guess_list[current_row][current_column] = ""
+            counter -= 1  # Move back to the previous column
 
-            draw_grid()
-            counter += 1
+            guess_list[current_row][counter] = ""  # Clear the current letter
+            
+            draw_grid()  # Only redraw the grid after backspace is handled
+
 
 
 
