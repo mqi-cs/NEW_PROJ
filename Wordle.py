@@ -7,14 +7,14 @@ pygame.init()           #initialising pygame
 screen_width,screen_height = 400,400    #variables for screen width and height.
 
 # Define colours
-White = (255, 255, 255)
-Black = (0, 0, 0)
-Green = (0, 255, 0)
-Yellow = (255, 255, 0)
-Grey = (128, 128, 128)
+white = (255, 255, 255)
+black = (0, 0, 0)
+green = (0, 255, 0)
+yellow = (255, 255, 0)
+grey = (128, 128, 128)
 
-Wordle_Columns = 5   # dimesnions for wordle grid
-Wordle_rows = 6
+wordle_columns = 5   # dimesnions for wordle grid
+wordle_rows = 6
 
 margin = 50         #margin so gap between edges of screen and grid
 
@@ -28,39 +28,45 @@ counter = 0
  #List of all alphabet keys
 alphabet_keys = {getattr(pygame, f"K_{letter}"): letter for letter in string.ascii_lowercase}
 
+guess_list = [["" for _ in range(wordle_columns)] for _ in range(wordle_rows)]            # 2d arrray to hold guesses
+
+
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
 
 pygame.display.set_caption("Wordle Variant")           #window name
  
-def draw_grid(input):    #function to draw grid
+def draw_grid():    #function to draw grid
     
     # Calculate cell size based on screen size
     available_width = screen_width - (2 * margin)
     available_height = screen_height - (2 * margin)
 
-    cell_width = available_width // Wordle_Columns
-    cell_height = available_height // Wordle_rows
+    cell_width = available_width // wordle_columns
+    cell_height = available_height // wordle_rows
 
     # Calculate starting position for grid
     start_x = margin
     start_y = margin
 
-    for c in range(Wordle_Columns):
-        for r in range(Wordle_rows):
+    for c in range(wordle_columns):
+        for r in range(wordle_rows):
             x = start_x + (c * cell_width)
             y = start_y + (r * cell_height)
-            pygame.draw.rect(screen, White, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
+            pygame.draw.rect(screen, white, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
 
             # Calculate center of the cell
             text_x = x + (cell_width // 2)
             text_y = y + (cell_height // 2)
 
+            input = guess_list[r][c]
+
             draw_input(input,text_x, text_y)
             
 
 def draw_input(input,x,y):  
-    display_text = input_font.render(input, True, White)  # Render the text
+
+    display_text = input_font.render(input, True, white)  # Render the text
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
     screen.blit(display_text, centered_text)  # Draw the text on screen
 
@@ -75,13 +81,19 @@ def input_condition(event):
     if event.type == pygame.QUIT:
         running = False
 
-    elif event.key in alphabet_keys:
+    elif event.key in alphabet_keys:      # Handle alphabet key input
 
-        draw_grid(alphabet_keys[event.key])
+        guess_list[current_row][current_column] = alphabet_keys[event.key]
+
+        draw_grid()
         counter += 1
 
 
     elif event.key == pygame.K_BACKSPACE:  # Handle backspace
+
+        guess_list[current_row][current_column] = ""
+        draw_grid()
+
         counter -= 1
 
 
@@ -107,9 +119,7 @@ while running:
         
         input_condition(event)
 
-    screen.fill(Black)  # Fill the screen with black background
-
-
+    screen.fill(black)  # Fill the screen with black background
 
 
     pygame.display.flip()  # Update the screen
