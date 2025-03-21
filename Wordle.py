@@ -97,7 +97,7 @@ def input_condition(event):
 
     global running, counter
 
-    counter_condition()
+    counter_condition(event)
 
     if event.type == pygame.QUIT:
         running = False
@@ -121,7 +121,7 @@ def input_condition(event):
 
             draw_grid()  # Only redraw the grid after backspace is handled    
 
-def counter_condition():
+def counter_condition(event):
 
     global current_row, current_column, counter, running
 
