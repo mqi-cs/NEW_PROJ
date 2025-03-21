@@ -30,7 +30,7 @@ alphabet_keys = {getattr(pygame, f"K_{letter}"): letter for letter in string.asc
 
 guess_list = [["" for _ in range(wordle_columns)] for _ in range(wordle_rows)]            # 2d arrray to hold guesses
 
-
+wordle = "hello"  #word to be guessed
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
 
@@ -39,8 +39,9 @@ pygame.display.set_caption("Wordle Variant")           #window name
 
 def colours():    #function to draw coloured letters after checking position
 
+    for column in range(wordle_columns):
 
-
+        
 
 
 
