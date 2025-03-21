@@ -36,30 +36,25 @@ screen = pygame.display.set_mode((screen_width,screen_height))   #initialising d
 
 pygame.display.set_caption("Wordle Variant")           #window name
  
+cell_colours = [[black for _ in range(wordle_columns)] for _ in range(wordle_rows)]  # Default all to black
 
-def colours():    #function to draw coloured letters after checking position
+def colour():  
+    global cell_colours  
 
-    
-    for column in range(wordle_columns):   #loop through number of columns
-
-        if guess_list[current_row][column] == wordle[column]:    #check the guesses with wordle for that index
- 
-            draw_grid(green)
-
-        elif guess_list[current_row][column] in wordle:
-
-            draw_grid(yellow)
-
-        else:
-
-            draw_grid(grey)
+    for column in range(wordle_columns):  
+        if guess_list[current_row][column] == wordle[column]:  
+            cell_colours[current_row][column] = green  # Correct position
+        elif guess_list[current_row][column] in wordle:  
+            cell_colours[current_row][column] = yellow  # Wrong position
+        else:  
+            cell_colours[current_row][column] = grey  # Not in word
         
 
 
 
 
 
-def draw_grid(colourz=black):    #function to draw grid
+def draw_grid():    #function to draw grid
     
     # Calculate cell size based on screen size
     available_width = screen_width - (2 * margin)
@@ -77,7 +72,7 @@ def draw_grid(colourz=black):    #function to draw grid
             x = start_x + (c * cell_width)
             y = start_y + (r * cell_height)
 
-            pygame.draw.rect(screen, colourz, (x, y, cell_width, cell_height))  #cell with no thicknesses, used to fill each cell
+            pygame.draw.rect(screen, cell_colours[r][c], (x, y, cell_width, cell_height))  #cell with no thicknesses, used to fill each cell
 
             pygame.draw.rect(screen, white, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
 
