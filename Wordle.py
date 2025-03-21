@@ -49,28 +49,22 @@ def colour():
         if guess_list[current_row][column] == wordle[column]:  
             cell_colours[current_row][column] = green  # Correct position
 
+            
+
             rep_letters.append(wordle[column])  # Add the letter to the list of repeated letters
 
-            colour_counters += 1
+        elif guess_list[current_row][column] in wordle and colour_condition(column):  
 
-        elif guess_list[current_row][column] in wordle and colour_condition():  
             cell_colours[current_row][column] = yellow  # Wrong position
 
         else:  
             cell_colours[current_row][column] = grey  # Not in word
         
 
-def colour_condition():
+def colour_condition(index):
 
-    for i in range(wordle_columns):
-
-            reps = wordle.count(rep_letters[i])  # Count the number of times the letter appears in the word
-
-            for j in range(reps):
-
-                if guess_list[current_row][i] == rep_letters[i]:
-
-                    return True
+    if rep_letters.count(index) < wordle.count(guess_list[current_row][index]):
+        return True
 
 
 
