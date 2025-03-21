@@ -136,7 +136,6 @@ def counter_condition():
         current_column = 0
         counter = 0
 
-        colour()  # colours letters after checking position after enter is pressed
 
     elif current_row >= wordle_rows:
         print("Game Over")
