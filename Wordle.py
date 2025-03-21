@@ -38,19 +38,32 @@ pygame.display.set_caption("Wordle Variant")           #window name
  
 cell_colours = [[black for _ in range(wordle_columns)] for _ in range(wordle_rows)]  # Default all to black
 
+colour_counters = 0  # number of letters
+
 def colour():  
     global cell_colours  
+    global colour_counters
 
     for column in range(wordle_columns):  
+
         if guess_list[current_row][column] == wordle[column]:  
             cell_colours[current_row][column] = green  # Correct position
-        elif guess_list[current_row][column] in wordle:  
+
+            colour_counters += 1
+
+        elif guess_list[current_row][column] in wordle and colour_condition():  
             cell_colours[current_row][column] = yellow  # Wrong position
+
         else:  
             cell_colours[current_row][column] = grey  # Not in word
         
 
+def colour_condition():
 
+    reps = wordle.count(guess_list[current_row][current_column])  # Count the number of times the letter appears in the word
+
+    if colour_counters < reps:
+        return True
 
 
 
