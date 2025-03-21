@@ -125,11 +125,14 @@ running = True                    #main loop allowing to exit app
 while running:
     for event in pygame.event.get():
         
+
         if event.type == pygame.KEYDOWN:
 
             input_condition(event)
 
     screen.fill(black)  # Fill the screen with black background
+
+    draw_grid()  # Always draw the grid
 
 
     pygame.display.flip()  # Update the screen
