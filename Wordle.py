@@ -40,16 +40,21 @@ cell_colours = [[black for _ in range(wordle_columns)] for _ in range(wordle_row
 
 rep_letters = []  # List of repeated letters
 
+colour_counters = 0  # Counter for coloured cells
+
 def colour():  
     global cell_colours  
-    global colour_counters
+    global colour_counters  
 
     for column in range(wordle_columns):  
 
+        rep_letters.clear()  # Clear the list of repeated letters
+
         if guess_list[current_row][column] == wordle[column]:  
+
             cell_colours[current_row][column] = green  # Correct position
 
-            
+            colour_counters += cell_colours[current_row][column].count(green)
 
             rep_letters.append(wordle[column])  # Add the letter to the list of repeated letters
 
@@ -63,7 +68,7 @@ def colour():
 
 def colour_condition(index):
 
-    if rep_letters.count(index) < wordle.count(guess_list[current_row][index]):
+    if colour_counters < wordle.count(guess_list[current_row][index]):
         return True
 
 
