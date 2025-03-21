@@ -39,15 +39,27 @@ pygame.display.set_caption("Wordle Variant")           #window name
 
 def colours():    #function to draw coloured letters after checking position
 
-    for column in range(wordle_columns):
+    
+    for column in range(wordle_columns):   #loop through number of columns
 
+        if guess_list[current_row][column] == wordle[column]:    #check the guesses with wordle for that index
+ 
+            draw_grid(green)
+
+        elif guess_list[current_row][column] in wordle:
+
+            draw_grid(yellow)
+
+        else:
+
+            draw_grid(grey)
         
 
 
 
 
 
-def draw_grid():    #function to draw grid
+def draw_grid(colourz=black):    #function to draw grid
     
     # Calculate cell size based on screen size
     available_width = screen_width - (2 * margin)
@@ -64,6 +76,9 @@ def draw_grid():    #function to draw grid
         for r in range(wordle_rows):
             x = start_x + (c * cell_width)
             y = start_y + (r * cell_height)
+
+            pygame.draw.rect(screen, colourz, (x, y, cell_width, cell_height))  #cell with no thicknesses, used to fill each cell
+
             pygame.draw.rect(screen, white, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
 
             # Calculate center of the cell
@@ -119,6 +134,9 @@ def counter_condition():
     
 
     if counter == 5 and event.key == pygame.K_RETURN :  # Only switches rows when enter is pressed
+        
+        colour()  # colours letters after checking position after enter is pressed
+
         current_row += 1
         current_column = 0
         counter = 0
