@@ -37,6 +37,15 @@ screen = pygame.display.set_mode((screen_width,screen_height))   #initialising d
 pygame.display.set_caption("Wordle Variant")           #window name
  
 
+def colours():    #function to draw coloured letters after checking position
+
+
+
+
+
+
+
+
 def draw_grid():    #function to draw grid
     
     # Calculate cell size based on screen size
@@ -82,7 +91,7 @@ def input_condition(event):
     if event.type == pygame.QUIT:
         running = False
 
-    elif event.key in alphabet_keys:  # Handle alphabet key input
+    elif event.key in alphabet_keys and counter != 5 :  # Handle alphabet key input  with restrictions
 
         guess_list[current_row][counter] = alphabet_keys[event.key]  # Use counter for column index
 
@@ -99,10 +108,7 @@ def input_condition(event):
 
             guess_list[current_row][counter] = ""  # Clear the current letter
 
-            draw_grid()  # Only redraw the grid after backspace is handled
-
-
-
+            draw_grid()  # Only redraw the grid after backspace is handled    
 
 def counter_condition():
 
@@ -111,10 +117,12 @@ def counter_condition():
     current_column = counter  # for backspace function
     
 
-    if counter == 5:
+    if counter == 5 and event.key == pygame.K_RETURN :  # Only switches rows when enter is pressed
         current_row += 1
         current_column = 0
         counter = 0
+
+        colour()  # colours letters after checking position after enter is pressed
 
     elif current_row >= wordle_rows:
         print("Game Over")
