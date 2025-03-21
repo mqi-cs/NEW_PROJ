@@ -108,6 +108,7 @@ def counter_condition():
 
     global current_row, current_column, counter, running
 
+    current_column = counter  # for backspace function
     
 
     if counter == 5:
@@ -117,7 +118,6 @@ def counter_condition():
 
     elif current_row >= wordle_rows:
         print("Game Over")
-        running = False
 
 
 
