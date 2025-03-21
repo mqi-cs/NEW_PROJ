@@ -135,3 +135,6 @@ while running:
     pygame.display.flip()  # Update the screen
 
 pygame.quit() # Quit the game
+
+
+# End of code
