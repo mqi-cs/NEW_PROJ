@@ -38,7 +38,7 @@ pygame.display.set_caption("Wordle Variant")           #window name
  
 cell_colours = [[black for _ in range(wordle_columns)] for _ in range(wordle_rows)]  # Default all to black
 
-colour_counters = 0  # number of letters
+rep_letters = []  # List of repeated letters
 
 def colour():  
     global cell_colours  
@@ -48,6 +48,8 @@ def colour():
 
         if guess_list[current_row][column] == wordle[column]:  
             cell_colours[current_row][column] = green  # Correct position
+
+            rep_letters.append(wordle[column])  # Add the letter to the list of repeated letters
 
             colour_counters += 1
 
@@ -60,10 +62,15 @@ def colour():
 
 def colour_condition():
 
-    reps = wordle.count(guess_list[current_row][current_column])  # Count the number of times the letter appears in the word
+    for i in range(wordle_columns):
 
-    if colour_counters < reps:
-        return True
+            reps = wordle.count(rep_letters[i])  # Count the number of times the letter appears in the word
+
+            for j in range(reps):
+
+                if guess_list[current_row][i] == rep_letters[i]:
+
+                    return True
 
 
 
