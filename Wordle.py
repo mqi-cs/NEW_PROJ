@@ -38,9 +38,11 @@ pygame.display.set_caption("Wordle Variant")           #window name
  
 cell_colours = [[black for _ in range(wordle_columns)] for _ in range(wordle_rows)]  # Default all to black
 
+#rep_letters = [["" for _ in range(2)] for _ in range(wordle_columns) ]  # List of repeated letters
+
 rep_letters = []  # List of repeated letters
 
-colour_counters = 0  # Counter for coloured cells
+#colour_counters = 0  # Counter for correct positions
 
 def colour():  
     global cell_colours  
@@ -48,15 +50,12 @@ def colour():
 
     for column in range(wordle_columns):  
 
-        rep_letters.clear()  # Clear the list of repeated letters
-
         if guess_list[current_row][column] == wordle[column]:  
 
             cell_colours[current_row][column] = green  # Correct position
 
-            colour_counters += cell_colours[current_row][column].count(green)
-
             rep_letters.append(wordle[column])  # Add the letter to the list of repeated letters
+
 
         elif guess_list[current_row][column] in wordle and colour_condition(column):  
 
@@ -64,11 +63,11 @@ def colour():
 
         else:  
             cell_colours[current_row][column] = grey  # Not in word
-        
+
 
 def colour_condition(index):
 
-    if colour_counters < wordle.count(guess_list[current_row][index]):
+    if (rep_letters.count(guess_list[current_row][index]))  < wordle.count(guess_list[current_row][index]):
         return True
 
 
@@ -154,6 +153,8 @@ def counter_condition(event):
         current_row += 1
         current_column = 0
         counter = 0
+
+        rep_letters.clear()  # Clear the list of repeated letters   
 
 
     elif current_row >= wordle_rows:
