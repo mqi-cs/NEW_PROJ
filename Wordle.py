@@ -73,7 +73,11 @@ def colour_condition(index):
 
 
 def draw_grid():    #function to draw grid
-    
+
+
+    screen.fill(black)  # Fill the screen with black background
+
+
     # Calculate cell size based on screen size
     available_width = screen_width - (2 * margin)
     available_height = screen_height - (2 * margin)
@@ -170,8 +174,6 @@ while running:
         if event.type == pygame.KEYDOWN:
 
             input_condition(event)
-
-    screen.fill(black)  # Fill the screen with black background
 
     draw_grid()  # Always draw the grid
 
