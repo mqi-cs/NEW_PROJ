@@ -45,7 +45,6 @@ yellow_letters = []
 temp_counter = 0
 
 def colour():
-
     global temp_counter
 
     for column in range(wordle_columns):
