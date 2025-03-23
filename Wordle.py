@@ -75,6 +75,7 @@ def colour():
 
     temp_counter = 0
     rep_letters.clear()
+    yellow_letters.clear()
 
 def colour_conditional(index):
 
