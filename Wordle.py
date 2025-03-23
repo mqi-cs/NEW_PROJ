@@ -38,37 +38,60 @@ pygame.display.set_caption("Wordle Variant")           #window name
  
 cell_colours = [[black for _ in range(wordle_columns)] for _ in range(wordle_rows)]  # Default all to black
 
-#rep_letters = [["" for _ in range(2)] for _ in range(wordle_columns) ]  # List of repeated letters
-
-rep_letters = []  # List of repeated letters
-
-#colour_counters = 0  # Counter for correct positions
-
-def colour():  
-    global cell_colours  
-    global colour_counters  
-
-    for column in range(wordle_columns):  
-
-        if guess_list[current_row][column] == wordle[column]:  
-
-            cell_colours[current_row][column] = green  # Correct position
-
-            rep_letters.append(wordle[column])  # Add the letter to the list of repeated letters
 
 
-        elif guess_list[current_row][column] in wordle and colour_condition(column):  
+rep_letters = []
+yellow_letters = []
+temp_counter = 0
 
-            cell_colours[current_row][column] = yellow  # Wrong position
+def colour():
 
-        else:  
-            cell_colours[current_row][column] = grey  # Not in word
+    global temp_counter
+
+    for column in range(wordle_columns):
+
+        if guess_list[current_row][column] == wordle[column]:
+
+            rep_letters.append(wordle[column])
+
+        temp_counter += 1
 
 
-def colour_condition(index):
+        if temp_counter == wordle_columns:
 
-    if (rep_letters.count(guess_list[current_row][index]))  < wordle.count(guess_list[current_row][index]):
+            for column in range(wordle_columns):
+
+                if  guess_list[current_row][column] == wordle[column]:
+
+                    cell_colours[current_row][column] = green
+
+                elif guess_list[current_row][column] in wordle and colour_conditional(column):
+
+                    yellow_letters.append(guess_list[current_row][column])
+                    cell_colours[current_row][column] = yellow  # Wrong position
+
+                else:  
+
+                    cell_colours[current_row][column] = grey  # Not in word
+
+    temp_counter = 0
+    rep_letters.clear()
+
+def colour_conditional(index):
+
+    current_l = guess_list[current_row][index]
+
+    instances = wordle.count(current_l)
+
+    yellow_l = yellow_letters.count(current_l)
+
+    correct_g = rep_letters.count(current_l)
+
+
+    if correct_g < instances and yellow_l < instances:
+
         return True
+
 
 
 
@@ -157,9 +180,6 @@ def counter_condition(event):
         current_row += 1
         current_column = 0
         counter = 0
-
-        rep_letters.clear()  # Clear the list of repeated letters   
-
 
     elif current_row >= wordle_rows:
         print("Game Over")
