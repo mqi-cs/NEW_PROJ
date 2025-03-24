@@ -25,8 +25,8 @@ current_column = 0
 
 counter = 0                                              
 
- #List of all alphabet keys
-alphabet_keys = {getattr(pygame, f"K_{letter}"): letter for letter in string.ascii_lowercase}
+ #List of all alphabet keys - uppercase
+alphabet_keys = {getattr(pygame, f"K_{letter}"): letter.upper() for letter in string.ascii_lowercase}
 
 guess_list = [["" for _ in range(wordle_columns)] for _ in range(wordle_rows)]            # 2d arrray to hold guesses
 
