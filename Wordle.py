@@ -20,6 +20,9 @@ margin = 50         #margin so gap between edges of screen and grid
 
 input_font = pygame.font.Font(None, 50)  # Font for input text
 
+button_font = pygame.font.Font(None, 25)  # Font for buttons
+
+
 current_row = 0               # where to add text input
 current_column = 0  
 
@@ -31,6 +34,7 @@ alphabet_keys = {getattr(pygame, f"K_{letter}"): letter.upper() for letter in st
 guess_list = [["" for _ in range(wordle_columns)] for _ in range(wordle_rows)]            # 2d arrray to hold guesses
 
 wordle = "hello"  #word to be guessed
+wordle = wordle.upper()  # Convert to uppercase
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
 
@@ -181,8 +185,17 @@ def counter_condition(event):
         current_column = 0
         counter = 0
 
-    elif current_row >= wordle_rows:
-        print("Game Over")
+    elif (current_row) >= wordle_rows:
+        draw_text("game over",200,200)
+
+
+
+def draw_text(text,x,y):  
+
+    display_text = input_font.render(text, True, white)  # Render the text
+    centered_text = display_text.get_rect(center=(x,y))  # Center the text
+    screen.blit(display_text, centered_text)  # Draw the text on screen
+
 
 
 
@@ -194,6 +207,11 @@ while running:
         if event.type == pygame.KEYDOWN:
 
             input_condition(event)
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            pass
+
+
 
     draw_grid()  # Always draw the grid
 
