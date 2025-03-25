@@ -1,6 +1,6 @@
 import pygame  #importing required libraries
 import string  #import alphabet for key input handling
-
+from database.py import random_wordle #importing random_wordle function from database.py
 
 pygame.init()           #initialising pygame
 
@@ -33,7 +33,7 @@ alphabet_keys = {getattr(pygame, f"K_{letter}"): letter.upper() for letter in st
 
 guess_list = [["" for _ in range(wordle_columns)] for _ in range(wordle_rows)]            # 2d arrray to hold guesses
 
-wordle = "hello"  #word to be guessed
+wordle = random_wordle()  #word to be guessed
 wordle = wordle.upper()  # Convert to uppercase
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
@@ -132,7 +132,6 @@ def draw_grid():    #function to draw grid
             letter = guess_list[r][c]
 
             draw_input(letter,text_x, text_y)
-            
 
 def draw_input(letter,x,y):  
 
