@@ -1,6 +1,6 @@
 import pygame  #importing required libraries
 import string  #import alphabet for key input handling
-from database.py import random_wordle #importing random_wordle function from database.py
+import random  #import random for random word selection
 
 pygame.init()           #initialising pygame
 
@@ -33,7 +33,23 @@ alphabet_keys = {getattr(pygame, f"K_{letter}"): letter.upper() for letter in st
 
 guess_list = [["" for _ in range(wordle_columns)] for _ in range(wordle_rows)]            # 2d arrray to hold guesses
 
-wordle = random_wordle()  #word to be guessed
+
+def rand_wordle():
+    # Open the text file containing words
+    with open('wordle_db.txt', 'r') as file:  # Open the file for reading
+        words = file.readlines()  # Read all lines in the file
+
+    # Filter the words to find 5-letter words
+    five_letter_words = [word.strip() for word in words if len(word.strip()) == 5]
+
+    # Select a random word from the 5-letter words
+    if five_letter_words:
+        return random.choice(five_letter_words)  # Randomly choose a word
+    else:
+        return None  # Return None if no 5-letter words are found
+
+
+wordle = rand_wordle()  #word to be guessed
 wordle = wordle.upper()  # Convert to uppercase
 
 screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
@@ -180,13 +196,19 @@ def counter_condition(event):
         
         colour()  # colours letters after checking position after enter is pressed
 
+
+
+        if current_row == wordle_rows - 1:  # If on the last row
+            screen.fill(black)
+            draw_text("Game Over", 200, 200)
+            draw_text(f"The word was {wordle}", 200, 250)
+            pygame.display.flip()
+            pygame.time.delay(2000)  # Pause for 2 seconds
+            return  # Stop further execution
+        
         current_row += 1
         current_column = 0
         counter = 0
-
-    elif (current_row) >= wordle_rows:
-        draw_text("game over",200,200)
-
 
 
 def draw_text(text,x,y):  
@@ -194,6 +216,7 @@ def draw_text(text,x,y):
     display_text = input_font.render(text, True, white)  # Render the text
     centered_text = display_text.get_rect(center=(x,y))  # Center the text
     screen.blit(display_text, centered_text)  # Draw the text on screen
+
 
 
 
