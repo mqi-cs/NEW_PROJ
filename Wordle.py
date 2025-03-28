@@ -64,7 +64,7 @@ class classic_wordle:
 
         self.pygame.display.set_caption("Wordle Variant")           #window name
         
-        self.cell_colours = [[black for _ in range(wordle_columns)] for _ in range(wordle_rows)]  # Default all to black
+        self.cell_colours = [[self.black for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]  # Default all to black
 
 
 
@@ -79,27 +79,27 @@ class classic_wordle:
 
                 if self.guess_list[self.current_row][self.column] == self.wordle[self.column]:
 
-                    self.rep_letters.append(wordle[column])
+                    self.rep_letters.append(self.wordle[column])
 
                 temp_counter += 1
 
 
-                if temp_counter == wordle_columns:
+                if temp_counter == self.wordle_columns:
 
-                    for column in range(wordle_columns):
+                    for column in range(self.wordle_columns):
 
-                        if  guess_list[current_row][column] == wordle[column]:
+                        if  self.guess_list[current_row][column] == self.wordle[column]:
 
-                            cell_colours[current_row][column] = green
+                            self.cell_colours[current_row][column] = self.green
 
-                        elif guess_list[current_row][column] in wordle and colour_conditional(column):
+                        elif self.guess_list[current_row][column] in self.wordle and colour_conditional(column):
 
-                            yellow_letters.append(guess_list[current_row][column])
-                            cell_colours[current_row][column] = yellow  # Wrong position
+                            self.yellow_letters.append(self.guess_list[current_row][column])
+                            self.cell_colours[current_row][column] = self.yellow  # Wrong position
 
                         else:  
 
-                            cell_colours[current_row][column] = grey  # Not in word
+                            self.cell_colours[current_row][column] = self.grey  # Not in word
 
             self.temp_counter = 0
             self.rep_letters.clear()
@@ -126,42 +126,42 @@ class classic_wordle:
         def draw_grid(self):    #function to draw grid
 
 
-            self.screen.fill(black)  # Fill the screen with black background
+            self.screen.fill(self.black)  # Fill the screen with black background
 
 
             # Calculate cell size based on screen size
-            available_width = screen_width - (2 * margin)
-            available_height = screen_height - (2 * margin)
+            available_width = self.screen_width - (2 * self.margin)
+            available_height = self.screen_height - (2 * self.margin)
 
-            cell_width = available_width // wordle_columns
-            cell_height = available_height // wordle_rows
+            cell_width = available_width // self.wordle_columns
+            cell_height = available_height // self.wordle_rows
 
             # Calculate starting position for grid
-            start_x = margin
-            start_y = margin
+            start_x = self.margin
+            start_y = self.margin
 
             for c in range(self.wordle_columns):
                 for r in range(self.wordle_rows):
                     x = start_x + (c * cell_width)
                     y = start_y + (r * cell_height)
 
-                    pygame.draw.rect(self.screen, cell_colours[r][c], (x, y, cell_width, cell_height))  #cell with no thicknesses, used to fill each cell
+                    pygame.draw.rect(self.screen, self.cell_colours[r][c], (x, y, cell_width, cell_height))  #cell with no thicknesses, used to fill each cell
 
-                    pygame.draw.rect(self.screen, white, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
+                    pygame.draw.rect(self.screen, self.white, (x, y, cell_width, cell_height), 2)  # (x, y coordinates, width, height, thickness)
 
                     # Calculate center of the cell
                     text_x = x + (cell_width // 2)
                     text_y = y + (cell_height // 2)
 
-                    self.letter = guess_list[r][c]
+                    self.letter = self.guess_list[r][c]
 
-                    draw_input(letter,text_x, text_y)
+                    draw_input(self.letter,text_x, text_y)
 
         def draw_input(self,letter,x,y):  
 
-            display_text = input_font.render(letter, True, white)  # Render the text
+            display_text = self.input_font.render(letter, True, self.white)  # Render the text
             centered_text = display_text.get_rect(center=(x,y))  # Center the text
-            screen.blit(display_text, centered_text)  # Draw the text on screen
+            self.screen.blit(display_text, centered_text)  # Draw the text on screen
 
 
 
@@ -189,7 +189,7 @@ class classic_wordle:
 
                     self.counter -= 1  # Move back to the previous column
 
-                    guess_list[current_row][counter] = ""  # Clear the current letter
+                    self.guess_list[current_row][counter] = ""  # Clear the current letter
 
                     draw_grid()  # Only redraw the grid after backspace is handled    
 
@@ -206,8 +206,8 @@ class classic_wordle:
 
 
 
-                if current_row == wordle_rows - 1:  # If on the last row
-                    self.screen.fill(black)
+                if current_row == self.wordle_rows - 1:  # If on the last row
+                    self.screen.fill(self.black)
                     draw_text("Game Over", 200, 200)
                     draw_text(f"The word was {self.wordle}", 200, 250)
                     pygame.display.flip()
@@ -221,9 +221,9 @@ class classic_wordle:
 
         def draw_text(self,text,x,y):  
 
-            display_text = input_font.render(text, True, white)  # Render the text
+            display_text = self.input_font.render(text, True, self.white)  # Render the text
             centered_text = display_text.get_rect(center=(x,y))  # Center the text
-            screen.blit(display_text, centered_text)  # Draw the text on screen
+            self.screen.blit(display_text, centered_text)  # Draw the text on screen
 
 
         def hint_wordle(self):
