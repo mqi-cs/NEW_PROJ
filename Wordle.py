@@ -57,10 +57,10 @@ class classic_wordle:
                 return None  # Return None if no 5-letter words are found
 
 
-        self.wordle = rand_wordle()  #word to be guessed
-        self.wordle = wordle.upper()  # Convert to uppercase
+        self.wordle = self.rand_wordle()  #word to be guessed
+        self.wordle = self.wordle.upper()  # Convert to uppercase
 
-        self.screen = pygame.display.set_mode((screen_width,screen_height))   #initialising display window
+        self.screen = pygame.display.set_mode((self.screen_width,self.screen_height))   #initialising display window
 
         self.pygame.display.set_caption("Wordle Variant")           #window name
         
@@ -180,7 +180,7 @@ class classic_wordle:
 
                 self.counter += 1  # Move to the next column (i.e., increment the counter)
 
-                draw_grid()  # Only redraw the grid after input is handled
+                self.draw_grid()  # Only redraw the grid after input is handled
 
 
             elif event.key == pygame.K_BACKSPACE:  # Handle backspace
@@ -209,7 +209,7 @@ class classic_wordle:
                 if current_row == wordle_rows - 1:  # If on the last row
                     self.screen.fill(black)
                     draw_text("Game Over", 200, 200)
-                    draw_text(f"The word was {wordle}", 200, 250)
+                    draw_text(f"The word was {self.wordle}", 200, 250)
                     pygame.display.flip()
                     pygame.time.delay(2000)  # Pause for 2 seconds
                     return  # Stop further execution
@@ -239,7 +239,7 @@ class classic_wordle:
 
                 if event.type == pygame.KEYDOWN:
 
-                    input_condition(event)
+                    self.input_condition(event)
 
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pass
@@ -249,7 +249,7 @@ class classic_wordle:
             self.counter = 0
             self.current_row = 0
             self.current_column = 0
-            draw_grid()  # Always draw the grid
+            self.draw_grid()  # Always draw the grid
 
 
             pygame.display.flip()  # Update the screen
