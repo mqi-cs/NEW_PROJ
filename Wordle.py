@@ -260,3 +260,4 @@ class classic_wordle:
         # End of code
 
 game = classic_wordle()  # Create an instance of the game class
+game.run_game
