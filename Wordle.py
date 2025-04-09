@@ -161,6 +161,7 @@ class ClassicWordle:            #class
             self.current_column = 0
             self.counter = 0
 
+
     def run(self):                        #loop to check user input and display grid
 
         while self.running:      
@@ -170,6 +171,7 @@ class ClassicWordle:            #class
             self.draw_grid()             #continuously draws grid
             pygame.display.flip()           #update display
         pygame.quit()
+
 
 
 class HardWordle(ClassicWordle):  # same constructor and methods as classic except colour()
@@ -183,6 +185,8 @@ class HardWordle(ClassicWordle):  # same constructor and methods as classic exce
                                                                            #removed logic for yellow letters 
             else:
                self.cell_colours[self.current_row][column] = self.grey         
+
+ 
 
 
 
