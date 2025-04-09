@@ -1,7 +1,7 @@
 import pygame     #importing required libraries 
 import string     #import alphabet for key input handling
 import random     #import random for random word selection 
-
+import time       # import time for timed wordle
 class ClassicWordle:            #class 
 
 
@@ -172,6 +172,21 @@ class ClassicWordle:            #class
         pygame.quit()
 
 
+class HardWordle(ClassicWordle):  # same constructor and methods as classic except colour()
+
+    def colour(self):               #polymorphism
+        for column in range(self.wordle_columns):                
+            letter = self.guess_list[self.current_row][column]    
+
+            if letter == self.wordle[column]:                              
+                 self.cell_colours[self.current_row][column] = self.green         
+                                                                           #removed logic for yellow letters 
+            else:
+               self.cell_colours[self.current_row][column] = self.grey         
+
+
+
 if __name__ == "__main__":    #main loop
-    game = ClassicWordle()     #instance of class 
+    game = HardWordle()     #instance of class 
     game.run()             #run method of class to make wordle
+
