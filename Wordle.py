@@ -62,11 +62,20 @@ class ClassicWordle:            #class
 
     def hint(self):
 
+
         rand_index = random.randint(0, self.wordle_columns - 1)   #randomly select an index from 0 to 4
         rand_letter = self.wordle[rand_index]                  #randomly select a letter from wordle
+ 
 
-        self.guess_list[self.current_row][rand_index] = rand_letter  #add letter to guess list at random index
-        self.cell_colours[self.current_row][rand_index] = self.purple  #colour cell purple to indicate hint given
+        for prev_guesses in range(self.current_row):
+    
+            if rand_letter in self.guess_list[prev_guesses]:   #if letter already in guess list, call hint function again
+                return self.hint()                                        #recursion to call hint function again
+
+            else:
+
+                self.guess_list[self.current_row][rand_index] = rand_letter  #add letter to guess list at random index
+                self.cell_colours[self.current_row][rand_index] = self.purple  #colour cell purple to indicate hint given
 
 
     def colour(self):
@@ -187,7 +196,6 @@ class ClassicWordle:            #class
         pygame.quit()
 
 
-
 class HardWordle(ClassicWordle):  # same constructor and methods as classic except colour()
 
     def colour(self):               #polymorphism
@@ -205,6 +213,6 @@ class HardWordle(ClassicWordle):  # same constructor and methods as classic exce
 
 
 if __name__ == "__main__":    #main loop
-    game = HardWordle()     #instance of class 
+    game = ClassicWordle()     #instance of class 
     game.run()             #run method of class to make wordle
 
