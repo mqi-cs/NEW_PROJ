@@ -49,6 +49,7 @@ class ClassicWordle:            #class
         self.yellow_letters = []   #list of letters somewhere in wordle
         self.temp_counter = 0
 
+        self.hint_counter = 1   #number of hints available to user
         
         self.alphabet_keys = {getattr(pygame, f"K_{letter}"): letter.upper() for letter in string.ascii_lowercase}    #List of all alphabet keys - uppercase
 
@@ -62,21 +63,23 @@ class ClassicWordle:            #class
 
     def hint(self):
 
+        if self.hint_counter > 0:   #if hint counter is greater than 0, hint can be given
 
-        rand_index = random.randint(0, self.wordle_columns - 1)   #randomly select an index from 0 to 4
-        rand_letter = self.wordle[rand_index]                  #randomly select a letter from wordle
- 
-
-        for prev_guesses in range(self.current_row):
+            rand_index = random.randint(0, self.wordle_columns - 1)   #randomly select an index from 0 to 4
+            rand_letter = self.wordle[rand_index]                  #randomly select a letter from wordle
     
-            if rand_letter in self.guess_list[prev_guesses]:   #if letter already in guess list, call hint function again
-                return self.hint()                                        #recursion to call hint function again
 
-            else:
+            for prev_guesses in range(self.current_row):
+        
+                if rand_letter in self.guess_list[prev_guesses]:   #if letter already in guess list, call hint function again
+                    return self.hint()                                        #recursion to call hint function again
 
-                self.guess_list[self.current_row][rand_index] = rand_letter  #add letter to guess list at random index
-                self.cell_colours[self.current_row][rand_index] = self.purple  #colour cell purple to indicate hint given
+                else:
 
+                    self.guess_list[self.current_row][rand_index] = rand_letter  #add letter to guess list at random index
+                    self.cell_colours[self.current_row][rand_index] = self.purple  #colour cell purple to indicate hint given
+
+        self.hint_counter -= 1
 
     def colour(self):
 
@@ -158,6 +161,8 @@ class ClassicWordle:            #class
             self.counter -= 1
             self.guess_list[self.current_row][self.counter] = ""       #deletes letter from guess list
             self.draw_grid()
+
+            self.hint_counter += 1   #increment hint counter to allow for hint again
 
         elif event.key == pygame.K_1:     #hint button
             self.hint()                       #calls hint function to add letter to grid and colour it purple
