@@ -162,7 +162,6 @@ class ClassicWordle:            #class
             self.guess_list[self.current_row][self.counter] = ""       #deletes letter from guess list
             self.draw_grid()
 
-            self.hint_counter += 1   #increment hint counter to allow for hint again
 
         elif event.key == pygame.K_1:     #hint button
             self.hint()                       #calls hint function to add letter to grid and colour it purple
@@ -175,6 +174,7 @@ class ClassicWordle:            #class
 
         if self.counter == 5 and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
+
 
             if self.current_row == self.wordle_rows - 1:            # game over conditions and procedures
                 self.screen.fill(self.black)
@@ -189,6 +189,8 @@ class ClassicWordle:            #class
             self.current_column = 0
             self.counter = 0
 
+            if self.hint_counter == 0:      #make sure max 1 hint per guess
+                self.hint_counter += 1   #increment hint counter to allow for hint again
 
     def run(self):                        #loop to check user input and display grid
 
