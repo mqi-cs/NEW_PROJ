@@ -24,7 +24,7 @@ class ClassicWordle:            #class
         self.green = (0, 255, 0)
         self.yellow = (255, 255, 0)
         self.grey = (128, 128, 128)
-
+        self.purple = (128, 0, 128)
         
         self.wordle_columns = 5    # dimesnions for wordle grid
         self.wordle_rows = 6
@@ -59,6 +59,15 @@ class ClassicWordle:            #class
 
         five_letter_words = [word.strip() for word in words if len(word.strip()) == 5] # Filter the words to find 5-letter words
         return random.choice(five_letter_words) if five_letter_words else "ERROR"   #Randomly choose a word and return error if none selected
+
+    def hint(self):
+
+        rand_index = random.randint(0, self.wordle_columns - 1)   #randomly select an index from 0 to 4
+        rand_letter = self.wordle[rand_index]                  #randomly select a letter from wordle
+
+        self.guess_list[self.current_row][rand_index] = rand_letter  #add letter to guess list at random index
+        self.cell_colours[self.current_row][rand_index] = self.purple  #colour cell purple to indicate hint given
+
 
     def colour(self):
 
@@ -140,6 +149,11 @@ class ClassicWordle:            #class
             self.counter -= 1
             self.guess_list[self.current_row][self.counter] = ""       #deletes letter from guess list
             self.draw_grid()
+
+        elif event.key == pygame.K_1:     #hint button
+            self.hint()                       #calls hint function to add letter to grid and colour it purple
+
+
 
     def counter_condition(self, event):
 
