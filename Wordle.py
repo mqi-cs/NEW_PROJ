@@ -89,6 +89,7 @@ class ClassicWordle:            #class
                 self.rep_letters.append(self.wordle[column])                         # adds letter to list of correct letters
             self.temp_counter += 1                               #counter incremented
 
+
         if self.temp_counter == self.wordle_columns:  #loop commences after all correct letters are added to list
 
             for column in range(self.wordle_columns):                 #loop for each column in the grid
@@ -175,8 +176,19 @@ class ClassicWordle:            #class
         if self.counter == 5 and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
 
+            guessed_word = "".join(self.guess_list[self.current_row]).upper()
+            
+            if guessed_word == self.wordle:
+                self.screen.fill(self.black)
+                self.draw_text("You Win!", 200, 200)
+                self.draw_text(f"The word was {self.wordle}", 200, 250)
+                pygame.display.flip()
+                pygame.time.delay(3000)
+                self.running = False  # Stop the game
+                return
 
-            if self.current_row == self.wordle_rows - 1:            # game over conditions and procedures
+            # Check if it's the last row and the word is not correct
+            if self.current_row == self.wordle_rows - 1:
                 self.screen.fill(self.black)
                 self.draw_text("Game Over", 200, 200)
                 self.draw_text(f"The word was {self.wordle}", 200, 250)
@@ -191,6 +203,11 @@ class ClassicWordle:            #class
 
             if self.hint_counter == 0:      #make sure max 1 hint per guess
                 self.hint_counter += 1   #increment hint counter to allow for hint again
+
+
+    
+
+
 
     def run(self):                        #loop to check user input and display grid
 
@@ -220,11 +237,14 @@ class HardWordle(ClassicWordle):  # same constructor and methods as classic exce
 
 class TimedWordle(ClassicWordle):
 
-    def __init__(self, time_limit=60):
+    def __init__(self, time_limit=120):
         super().__init__()
 
         self.time_limit = time_limit  # in seconds
         self.start_time = time.time()
+
+        self.match_counter = 0  # Counter for rounds won
+
 
     def draw_timer(self):
         elapsed = time.time() - self.start_time
@@ -239,6 +259,7 @@ class TimedWordle(ClassicWordle):
         self.screen.fill(self.black)
         self.draw_text("Time's up!", 200, 180)
         self.draw_text(f"The word was {self.wordle}", 200, 230)
+        self.draw_text(f"Rounds won: {self.match_counter}", 200, 280)
         pygame.display.flip()
         pygame.time.delay(3000)
         self.running = False
@@ -251,7 +272,18 @@ class TimedWordle(ClassicWordle):
         if self.counter == 5 and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
 
-            if self.current_row == self.wordle_rows - 1:            # game over conditions and procedures
+            guessed_word = "".join(self.guess_list[self.current_row]).upper()
+
+            if guessed_word == self.wordle:
+
+                self.match_counter += 1  # Increment the match counter
+
+                self.reset_game()  # Reset the game for a new round
+                return
+
+              
+            # Check if it's the last row and the word is not correct
+            if self.current_row == self.wordle_rows - 1:
                 self.screen.fill(self.black)
                 self.draw_text("Game Over", 200, 200)
                 self.draw_text(f"The word was {self.wordle}", 200, 250)
@@ -268,9 +300,44 @@ class TimedWordle(ClassicWordle):
                 self.hint_counter += 1   #increment hint counter to allow for hint again
 
             self.wordle_rows += 1
+
             self.guess_list.append(["" for _ in range(self.wordle_columns)])
             self.cell_colours.append([self.black for _ in range(self.wordle_columns)])
+
+
+            cell_height = (self.screen_height - 2 * self.margin) // self.wordle_rows
+            total_height = self.margin * 2 + (cell_height * self.wordle_rows)
+            self.screen_height = total_height + self.margin
+            self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
             
+    def reset_game(self):
+        # Generate a new Wordle
+        self.wordle = self.get_random_word().upper()
+
+        # Reset the grid
+        self.guess_list = [["" for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]
+        self.cell_colours = [[self.black for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]
+
+        # Reset counters
+        self.current_row = 0
+        self.current_column = 0
+        self.counter = 0
+
+        # Reset hint counter
+        self.hint_counter = 1
+
+        # Reset screen dimensions to default
+        self.screen_width, self.screen_height = 400, 400  # Default dimensions
+        self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # Reset screen size
+
+
+
+        # Redraw the grid
+        self.screen.fill(self.black)
+        self.draw_grid()
+        pygame.display.flip()
+
+
 
     def run(self):
         while self.running:
