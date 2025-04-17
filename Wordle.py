@@ -218,7 +218,73 @@ class HardWordle(ClassicWordle):  # same constructor and methods as classic exce
  # clear everything after completion
 
 
+class TimedWordle(ClassicWordle):
+
+    def __init__(self, time_limit=60):
+        super().__init__()
+
+        self.time_limit = time_limit  # in seconds
+        self.start_time = time.time()
+
+    def draw_timer(self):
+        elapsed = time.time() - self.start_time
+        remaining = max(0, int(self.time_limit - elapsed))
+        timer_text = self.button_font.render(f"Time left: {remaining}s", True, self.white)
+        self.screen.blit(timer_text, (10, 10))
+
+        if remaining == 0:
+            self.reveal_word_and_quit()
+
+    def reveal_word_and_quit(self):
+        self.screen.fill(self.black)
+        self.draw_text("Time's up!", 200, 180)
+        self.draw_text(f"The word was {self.wordle}", 200, 230)
+        pygame.display.flip()
+        pygame.time.delay(3000)
+        self.running = False
+
+
+    def counter_condition(self, event):
+
+        self.current_column = self.counter
+
+        if self.counter == 5 and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
+            self.colour()                                                   #checks postions of letters and colours them accordingly
+
+            if self.current_row == self.wordle_rows - 1:            # game over conditions and procedures
+                self.screen.fill(self.black)
+                self.draw_text("Game Over", 200, 200)
+                self.draw_text(f"The word was {self.wordle}", 200, 250)
+                pygame.display.flip()
+                pygame.time.delay(2000)
+                self.running = False
+                return
+            
+            self.current_row += 1                            # next row and column reset for next guess
+            self.current_column = 0
+            self.counter = 0
+
+            if self.hint_counter == 0:      #make sure max 1 hint per guess
+                self.hint_counter += 1   #increment hint counter to allow for hint again
+
+            self.wordle_rows += 1
+            self.guess_list.append(["" for _ in range(self.wordle_columns)])
+            self.cell_colours.append([self.black for _ in range(self.wordle_columns)])
+            
+
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    self.input_condition(event)
+            self.draw_grid()
+            self.draw_timer()
+            pygame.display.flip()
+        pygame.quit()    
+
+
+
 if __name__ == "__main__":    #main loop
-    game = ClassicWordle()     #instance of class 
+    game = TimedWordle()  #instance of class 
     game.run()             #run method of class to make wordle
 
