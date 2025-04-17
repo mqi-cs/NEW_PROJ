@@ -96,7 +96,7 @@ class ClassicWordle:            #class
 
             self.draw_win("No hints available")  # Display a message if no hints are left
             pygame.display.flip()
-            pygame.time.delay(2000)  # Wait 2 seconds
+            pygame.time.delay(500)  # Wait 
 
 
 
@@ -270,6 +270,8 @@ class HardWordle(ClassicWordle):  # same constructor and methods as classic exce
 
  # clear everything after completion
 
+    def hint(self):
+        pass
 
 class TimedWordle(ClassicWordle):
 
@@ -313,6 +315,8 @@ class TimedWordle(ClassicWordle):
             if guessed_word == self.wordle:
 
                 self.match_counter += 1  # Increment the match counter
+
+                self.time_limit += 25  # Add 30 seconds for the next round
 
                 self.reset_game()  # Reset the game for a new round
                 return
