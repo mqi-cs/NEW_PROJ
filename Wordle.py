@@ -215,8 +215,7 @@ class HardWordle(ClassicWordle):  # same constructor and methods as classic exce
             else:
                self.cell_colours[self.current_row][column] = self.grey         
 
- 
-
+ # clear everything after completion
 
 
 if __name__ == "__main__":    #main loop
