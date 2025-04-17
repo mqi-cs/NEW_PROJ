@@ -489,21 +489,27 @@ class TimedWordle(ClassicWordle):
         pygame.quit()    
 
 
+pygame.init()
+
+# Define screen dimensions
+WIDTH, HEIGHT = 400, 400
+
+# Create the screen
+screen = pygame.display.set_mode((WIDTH, HEIGHT))
+pygame.display.set_caption("Wordle Game")
 
 
+while True:
 
-if __name__ == "__main__":
-    pygame.init()
-    WIDTH, HEIGHT = 800, 600
-    screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    pygame.display.set_caption("Wordle")
-
-    menu = MainMenu(screen, WIDTH, HEIGHT)
+    menu = MainMenu(screen, 400, 400)
     selected_mode = menu.run()
 
     if selected_mode == "classic":
-        ClassicWordle().run()
-    elif selected_mode == "timed":
-        TimedWordle().run()
+        game = ClassicWordle()
+        game.run()
     elif selected_mode == "hard":
-        HardWordle().run()
+        game = HardWordle()
+        game.run()
+    elif selected_mode == "timed":
+        game = TimedWordle()
+        game.run()
