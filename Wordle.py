@@ -16,7 +16,7 @@ class ClassicWordle:            #class
 
         
         self.input_font = pygame.font.Font(None, 50)     # Font for input text
-        self.button_font = pygame.font.Font(None, 25)    # Font for buttons for later use
+        self.win_font = pygame.font.Font(None, 50)    # Font for buttons for later use
 
        
         self.white = (255, 255, 255)    #defining colours for text,background and cell colours
@@ -38,7 +38,8 @@ class ClassicWordle:            #class
         self.running = True  # used to check if game is running for input handling
 
         
-        self.wordle = self.get_random_word().upper()   #word to be guessed in uppercase
+        #self.wordle = self.get_random_word().upper()   #word to be guessed in uppercase
+        self.wordle = "APPLE"  # For testing purposes
 
         self.guess_list = [["" for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]  # 2d arrray to hold guesses
 
@@ -53,6 +54,8 @@ class ClassicWordle:            #class
         
         self.alphabet_keys = {getattr(pygame, f"K_{letter}"): letter.upper() for letter in string.ascii_lowercase}    #List of all alphabet keys - uppercase
 
+        self.unrevealed_indices = [i for i in range(self.wordle_columns)]       
+
     def get_random_word(self):     # Open the text file containing words 
        
         with open('wordle_db.txt', 'r') as file:  # Open the file for reading
@@ -61,25 +64,42 @@ class ClassicWordle:            #class
         five_letter_words = [word.strip() for word in words if len(word.strip()) == 5] # Filter the words to find 5-letter words
         return random.choice(five_letter_words) if five_letter_words else "ERROR"   #Randomly choose a word and return error if none selected
 
+
+
     def hint(self):
 
-        if self.hint_counter > 0:   #if hint counter is greater than 0, hint can be given
+        if self.hint_counter > 0 and len(self.unrevealed_indices) > 0 and (self.current_row)>0 :  # Check if hints are available and unrevealed indices exist
 
-            rand_index = random.randint(0, self.wordle_columns - 1)   #randomly select an index from 0 to 4
-            rand_letter = self.wordle[rand_index]                  #randomly select a letter from wordle
+            i = random.choice(self.unrevealed_indices)
+
+
+            for cycle in range(self.current_row):
+
+
+                if self.cell_colours[self.current_row][cycle] == self.green: 
+                    
+                    self.unrevealed_indices.remove(i) if i in self.unrevealed_indices # Remove the index from the list to avoid duplicates
     
 
-            for prev_guesses in range(self.current_row):
-        
-                if rand_letter in self.guess_list[prev_guesses]:   #if letter already in guess list, call hint function again
-                    return self.hint()                                        #recursion to call hint function again
+                    self.hint()
 
-                else:
+                else: 
 
-                    self.guess_list[self.current_row][rand_index] = rand_letter  #add letter to guess list at random index
-                    self.cell_colours[self.current_row][rand_index] = self.purple  #colour cell purple to indicate hint given
+                    self.guess_list[self.current_row][i] = self.wordle[i]
+                    self.cell_colours[self.current_row][i] = self.purple  #  color to show it's a hint
 
-        self.hint_counter -= 1
+                    
+                    self.unrevealed_indices.remove(i)  if i in self.unrevealed_indices # Remove the index from the list to avoid duplicate
+                    self.hint_counter -= 1
+
+        else:
+
+            self.draw_win("No hints available")  # Display a message if no hints are left
+            pygame.display.flip()
+            pygame.time.delay(2000)  # Wait 2 seconds
+
+
+
 
     def colour(self):
 
@@ -146,12 +166,29 @@ class ClassicWordle:            #class
         centered_text = display_text.get_rect(center=(x, y))
         self.screen.blit(display_text, centered_text)
 
+
+    def draw_win(self, text):
+        # Calculate the position for the text underneath the grid
+        grid_height = self.margin + ((self.screen_height - 2 * self.margin) // self.wordle_rows) * self.wordle_rows
+        x = self.screen_width // 2  # Center horizontally
+        y = grid_height + 30  # Place the text 30 pixels below the grid
+
+        # Render and draw the text
+        display_text = self.win_font.render(text, True, self.purple)
+        centered_text = display_text.get_rect(center=(x, y))
+        self.screen.blit(display_text, centered_text)
+
+
+
     def input_condition(self, event):
 
         self.counter_condition(event)
 
         if event.type == pygame.QUIT:    # quit program when x icon pressed
             self.running = False
+
+        elif event.key == pygame.K_1:     #hint button
+            self.hint()                       #calls hint function to add letter to grid and colour it purple
 
         elif event.key in self.alphabet_keys and self.counter != 5:  #if key pressed is in alphabet keys and counter not at max
             self.guess_list[self.current_row][self.counter] = self.alphabet_keys[event.key]    #add letter to guess list
@@ -164,8 +201,6 @@ class ClassicWordle:            #class
             self.draw_grid()
 
 
-        elif event.key == pygame.K_1:     #hint button
-            self.hint()                       #calls hint function to add letter to grid and colour it purple
 
 
 
@@ -179,12 +214,13 @@ class ClassicWordle:            #class
             guessed_word = "".join(self.guess_list[self.current_row]).upper()
             
             if guessed_word == self.wordle:
-                self.screen.fill(self.black)
-                self.draw_text("You Win!", 200, 200)
-                self.draw_text(f"The word was {self.wordle}", 200, 250)
+
+                self.draw_win(f"The word was {self.wordle}")
+
                 pygame.display.flip()
-                pygame.time.delay(3000)
-                self.running = False  # Stop the game
+
+                pygame.time.delay(20000)  # Wait 2 seconds
+
                 return
 
             # Check if it's the last row and the word is not correct
@@ -194,9 +230,9 @@ class ClassicWordle:            #class
                 self.draw_text(f"The word was {self.wordle}", 200, 250)
                 pygame.display.flip()
                 pygame.time.delay(2000)
-                self.running = False
                 return
             
+
             self.current_row += 1                            # next row and column reset for next guess
             self.current_column = 0
             self.counter = 0
@@ -352,6 +388,6 @@ class TimedWordle(ClassicWordle):
 
 
 if __name__ == "__main__":    #main loop
-    game = TimedWordle()  #instance of class 
+    game = ClassicWordle()  #instance of class 
     game.run()             #run method of class to make wordle
 
