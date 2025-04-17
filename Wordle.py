@@ -2,6 +2,87 @@ import pygame     #importing required libraries
 import string     #import alphabet for key input handling
 import random     #import random for random word selection 
 import time       # import time for timed wordle
+
+class MainMenu:
+    def __init__(self, screen, width, height):
+        self.screen = screen
+        self.width = width
+        self.height = height
+        self.font = pygame.font.SysFont("arial", 36)
+        self.clock = pygame.time.Clock()
+
+        # Colors
+        self.bg_color = (20, 20, 20)
+        self.text_color = (255, 255, 255)
+
+        # Button settings
+        self.button_width = 300
+        self.button_height = 80
+        self.button_spacing = 40
+
+        # Create buttons
+        self.buttons = self.create_buttons()
+
+    def create_buttons(self):
+        total_height = (self.button_height * 3) + (self.button_spacing * 2)
+        start_y = (self.height - total_height) // 2
+        start_x = (self.width - self.button_width) // 2
+
+        return [
+            Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", self.font, (30, 144, 255), self.text_color, (70, 160, 255)),
+            Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", self.font, (34, 139, 34), self.text_color, (60, 179, 60)),
+            Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode", self.font, (178, 34, 34), self.text_color, (220, 20, 60)),
+        ]
+
+    def run(self):
+        while True:
+            self.screen.fill(self.bg_color)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+                for i, button in enumerate(self.buttons):
+                    if button.is_clicked(event):
+                        if i == 0:
+                            print("Launching Classic Mode...")
+                            return "classic"
+                        elif i == 1:
+                            print("Launching Timed Mode...")
+                            return "timed"
+                        elif i == 2:
+                            print("Launching Hard Mode...")
+                            return "hard"
+
+            for button in self.buttons:
+                button.draw(self.screen)
+
+            pygame.display.flip()
+            self.clock.tick(60)
+
+class Button:
+    def __init__(self, x, y, width, height, text, font, bg_color, text_color, hover_color):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.font = font
+        self.bg_color = bg_color
+        self.text_color = text_color
+        self.hover_color = hover_color
+
+    def draw(self, screen):
+        mouse_pos = pygame.mouse.get_pos()
+        color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.bg_color
+        pygame.draw.rect(screen, color, self.rect, border_radius=12)
+        text_surface = self.font.render(self.text, True, self.text_color)
+        text_rect = text_surface.get_rect(center=self.rect.center)
+        screen.blit(text_surface, text_rect)
+
+    def is_clicked(self, event):
+        return event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
+
+
+
+
 class ClassicWordle:            #class 
 
 
@@ -16,7 +97,7 @@ class ClassicWordle:            #class
 
         
         self.input_font = pygame.font.Font(None, 50)     # Font for input text
-        self.win_font = pygame.font.Font(None, 50)    # Font for buttons for later use
+        self.win_font = pygame.font.Font(None, 25)    # Font for buttons for later use
 
        
         self.white = (255, 255, 255)    #defining colours for text,background and cell colours
@@ -54,7 +135,20 @@ class ClassicWordle:            #class
         
         self.alphabet_keys = {getattr(pygame, f"K_{letter}"): letter.upper() for letter in string.ascii_lowercase}    #List of all alphabet keys - uppercase
 
-        self.unrevealed_indices = [i for i in range(self.wordle_columns)]       
+        self.unrevealed_indices = [i for i in range(self.wordle_columns)]  
+
+        self.font = pygame.font.SysFont(None, 30)
+        self.home_button = Button(
+            x=self.screen_width - 60,  # Place it 60 pixels from the right edge
+            y=20,                      # 20 pixels from the top
+            width=40, height=40,       # Button dimensions
+            text="🏠",                 # Unicode home icon
+            font=self.font,            # Use self.font
+            bg_color=(200, 200, 200),  # Light gray background
+            text_color=self.white,     # White text color
+            hover_color=(150, 150, 150)  # Darker gray for hover effect
+        )
+
 
     def get_random_word(self):     # Open the text file containing words 
        
@@ -240,10 +334,8 @@ class ClassicWordle:            #class
             if self.hint_counter == 0:      #make sure max 1 hint per guess
                 self.hint_counter += 1   #increment hint counter to allow for hint again
 
-
     
-
-
+    
 
     def run(self):                        #loop to check user input and display grid
 
@@ -251,7 +343,14 @@ class ClassicWordle:            #class
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:  
                     self.input_condition(event)    #function run for every key pressed
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.home_button.rect.collidepoint(event.pos):
+                        return 
+
+
             self.draw_grid()             #continuously draws grid
+            self.home_button.draw(self.screen)
             pygame.display.flip()           #update display
         pygame.quit()
 
@@ -389,83 +488,6 @@ class TimedWordle(ClassicWordle):
             pygame.display.flip()
         pygame.quit()    
 
-
-class MainMenu:
-    def __init__(self, screen, width, height):
-        self.screen = screen
-        self.width = width
-        self.height = height
-        self.font = pygame.font.SysFont("arial", 36)
-        self.clock = pygame.time.Clock()
-
-        # Colors
-        self.bg_color = (20, 20, 20)
-        self.text_color = (255, 255, 255)
-
-        # Button settings
-        self.button_width = 300
-        self.button_height = 80
-        self.button_spacing = 40
-
-        # Create buttons
-        self.buttons = self.create_buttons()
-
-    def create_buttons(self):
-        total_height = (self.button_height * 3) + (self.button_spacing * 2)
-        start_y = (self.height - total_height) // 2
-        start_x = (self.width - self.button_width) // 2
-
-        return [
-            self.Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", self.font, (30, 144, 255), self.text_color, (70, 160, 255)),
-            self.Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", self.font, (34, 139, 34), self.text_color, (60, 179, 60)),
-            self.Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode", self.font, (178, 34, 34), self.text_color, (220, 20, 60)),
-        ]
-
-    def run(self):
-        while True:
-            self.screen.fill(self.bg_color)
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    pygame.quit()
-
-                for i, button in enumerate(self.buttons):
-                    if button.is_clicked(event):
-                        if i == 0:
-                            print("Launching Classic Mode...")
-                            return "classic"
-                        elif i == 1:
-                            print("Launching Timed Mode...")
-                            return "timed"
-                        elif i == 2:
-                            print("Launching Hard Mode...")
-                            return "hard"
-
-            for button in self.buttons:
-                button.draw(self.screen)
-
-            pygame.display.flip()
-            self.clock.tick(60)
-
-    class Button:
-        def __init__(self, x, y, width, height, text, font, bg_color, text_color, hover_color):
-            self.rect = pygame.Rect(x, y, width, height)
-            self.text = text
-            self.font = font
-            self.bg_color = bg_color
-            self.text_color = text_color
-            self.hover_color = hover_color
-
-        def draw(self, screen):
-            mouse_pos = pygame.mouse.get_pos()
-            color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.bg_color
-            pygame.draw.rect(screen, color, self.rect, border_radius=12)
-            text_surface = self.font.render(self.text, True, self.text_color)
-            text_rect = text_surface.get_rect(center=self.rect.center)
-            screen.blit(text_surface, text_rect)
-
-        def is_clicked(self, event):
-            return event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
 
 
 
