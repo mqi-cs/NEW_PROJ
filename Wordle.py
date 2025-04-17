@@ -76,9 +76,9 @@ class ClassicWordle:            #class
             for cycle in range(self.current_row):
 
 
-                if self.cell_colours[self.current_row][cycle] == self.green: 
+                if self.cell_colours[cycle][i] == self.green: 
                     
-                    self.unrevealed_indices.remove(i) if i in self.unrevealed_indices # Remove the index from the list to avoid duplicates
+                    self.unrevealed_indices.remove(i) if i in self.unrevealed_indices else None # Remove the index from the list to avoid duplicates
     
 
                     self.hint()
@@ -89,7 +89,7 @@ class ClassicWordle:            #class
                     self.cell_colours[self.current_row][i] = self.purple  #  color to show it's a hint
 
                     
-                    self.unrevealed_indices.remove(i)  if i in self.unrevealed_indices # Remove the index from the list to avoid duplicate
+                    self.unrevealed_indices.remove(i)  if i in self.unrevealed_indices else None # Remove the index from the list to avoid duplicate
                     self.hint_counter -= 1
 
         else:
