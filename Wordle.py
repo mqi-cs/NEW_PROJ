@@ -287,7 +287,7 @@ class TimedWordle(ClassicWordle):
     def draw_timer(self):
         elapsed = time.time() - self.start_time
         remaining = max(0, int(self.time_limit - elapsed))
-        timer_text = self.button_font.render(f"Time left: {remaining}s", True, self.white)
+        timer_text = self.win_font.render(f"Time left: {remaining}s", True, self.white)
         self.screen.blit(timer_text, (10, 10))
 
         if remaining == 0:
@@ -390,8 +390,98 @@ class TimedWordle(ClassicWordle):
         pygame.quit()    
 
 
+class MainMenu:
+    def __init__(self, screen, width, height):
+        self.screen = screen
+        self.width = width
+        self.height = height
+        self.font = pygame.font.SysFont("arial", 36)
+        self.clock = pygame.time.Clock()
 
-if __name__ == "__main__":    #main loop
-    game = ClassicWordle()  #instance of class 
-    game.run()             #run method of class to make wordle
+        # Colors
+        self.bg_color = (20, 20, 20)
+        self.text_color = (255, 255, 255)
 
+        # Button settings
+        self.button_width = 300
+        self.button_height = 80
+        self.button_spacing = 40
+
+        # Create buttons
+        self.buttons = self.create_buttons()
+
+    def create_buttons(self):
+        total_height = (self.button_height * 3) + (self.button_spacing * 2)
+        start_y = (self.height - total_height) // 2
+        start_x = (self.width - self.button_width) // 2
+
+        return [
+            self.Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", self.font, (30, 144, 255), self.text_color, (70, 160, 255)),
+            self.Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", self.font, (34, 139, 34), self.text_color, (60, 179, 60)),
+            self.Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode", self.font, (178, 34, 34), self.text_color, (220, 20, 60)),
+        ]
+
+    def run(self):
+        while True:
+            self.screen.fill(self.bg_color)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+
+                for i, button in enumerate(self.buttons):
+                    if button.is_clicked(event):
+                        if i == 0:
+                            print("Launching Classic Mode...")
+                            return "classic"
+                        elif i == 1:
+                            print("Launching Timed Mode...")
+                            return "timed"
+                        elif i == 2:
+                            print("Launching Hard Mode...")
+                            return "hard"
+
+            for button in self.buttons:
+                button.draw(self.screen)
+
+            pygame.display.flip()
+            self.clock.tick(60)
+
+    class Button:
+        def __init__(self, x, y, width, height, text, font, bg_color, text_color, hover_color):
+            self.rect = pygame.Rect(x, y, width, height)
+            self.text = text
+            self.font = font
+            self.bg_color = bg_color
+            self.text_color = text_color
+            self.hover_color = hover_color
+
+        def draw(self, screen):
+            mouse_pos = pygame.mouse.get_pos()
+            color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.bg_color
+            pygame.draw.rect(screen, color, self.rect, border_radius=12)
+            text_surface = self.font.render(self.text, True, self.text_color)
+            text_rect = text_surface.get_rect(center=self.rect.center)
+            screen.blit(text_surface, text_rect)
+
+        def is_clicked(self, event):
+            return event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
+
+
+
+
+if __name__ == "__main__":
+    pygame.init()
+    WIDTH, HEIGHT = 800, 600
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    pygame.display.set_caption("Wordle")
+
+    menu = MainMenu(screen, WIDTH, HEIGHT)
+    selected_mode = menu.run()
+
+    if selected_mode == "classic":
+        ClassicWordle().run()
+    elif selected_mode == "timed":
+        TimedWordle().run()
+    elif selected_mode == "hard":
+        HardWordle().run()
