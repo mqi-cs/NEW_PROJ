@@ -9,6 +9,7 @@ class MainMenu:                                              # for main menu int
         self.width = width                                  #initialising variables for display setup
         self.height = height
         self.bg_color =(20, 20, 20)
+        self.font = pygame.font.SysFont("arial", 36)         #font for buttons
 
 
         # Button dimensions and spacing
@@ -28,6 +29,7 @@ class MainMenu:                                              # for main menu int
             Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", ),
             Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", ),
             Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode",),
+            Button(self.width - 65, 5, 60, 30, "click me",20),   # Home button
         ]   #buttons for every game mode
 
     def run(self):        
@@ -41,14 +43,13 @@ class MainMenu:                                              # for main menu int
                 for i, button in enumerate(self.buttons):   # Iterate through all buttons
                     if button.is_clicked(event):   #checks if any buttons have been clicked
                         if i == 0:    # If the first button is clicked
-                            print("Launching Classic Mode...")
                             return "classic"   #string triggers classic mode
                         elif i == 1:     # If the second button is clicked and so on
-                            print("Launching Timed Mode...")
                             return "timed"
                         elif i == 2:
-                            print("Launching Hard Mode...")
                             return "hard"
+                        elif i == 3:    # Home button
+                            return "instructions"
 
             for button in self.buttons:    #draws every button
                 button.draw(self.screen)
@@ -56,10 +57,10 @@ class MainMenu:                                              # for main menu int
             pygame.display.flip()  #updates display
 
 class Button:            #used to make various buttons 
-    def __init__(self, x, y, width, height, text):
+    def __init__(self, x, y, width, height, text,font_size=36):
         self.rect = pygame.Rect(x, y, width, height)            #rectangle shape for button
         self.text = text
-        self.font = pygame.font.SysFont("arial", 36)                                      #various variables for properties of the buttons
+        self.font = pygame.font.SysFont("arial", font_size)                                      #various variables for properties of the buttons
         self.bg_color =(128, 128, 128)
         self.text_color = (255, 255, 255)
 
@@ -135,7 +136,7 @@ class ClassicWordle:            #class
             x=self.screen_width - 60,  # Place it 60 pixels from the right edge
             y=20,                      # 20 pixels from the top
             width=40, height=40,       # Button dimensions
-            text="🏠",                 # Unicode home icon
+            text="<=",                 # Unicode home icon
         )
 
 
@@ -472,8 +473,14 @@ class TimedWordle(ClassicWordle):
             for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
                     self.input_condition(event)
+
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.home_button.rect.collidepoint(event.pos):
+                        return 
+
             self.draw_grid()
             self.draw_timer()
+            self.home_button.draw(self.screen)
             pygame.display.flip()
         pygame.quit()    
 
@@ -482,6 +489,8 @@ pygame.init()
 
 # Define screen dimensions
 WIDTH, HEIGHT = 400, 400
+bg_colour = (0, 0, 0)  # Black background
+
 
 # Create the screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -502,3 +511,6 @@ while True:
     elif selected_mode == "timed":
         game = TimedWordle()
         game.run()
+    elif selected_mode == "instructions":
+        screen.fill(bg_colour)
+        draw_text("Instructions", 200, 50)
