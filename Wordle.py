@@ -8,11 +8,8 @@ class MainMenu:                                              # for main menu int
         self.screen = screen
         self.width = width                                  #initialising variables for display setup
         self.height = height
-        self.font = pygame.font.SysFont("arial", 36)
+        self.bg_color =(20, 20, 20)
 
-        # Colours explanatory via name
-        self.bg_color = (20, 20, 20)
-        self.text_color = (255, 255, 255)
 
         # Button dimensions and spacing
         self.button_width = 300
@@ -20,17 +17,17 @@ class MainMenu:                                              # for main menu int
         self.button_spacing = 40
 
         # Create buttons in menu screen
-        self.buttons = self.create_buttons()
+        self.buttons = self.button_positioning()
 
-    def create_buttons(self):
+    def button_positioning(self):
         total_height = (self.button_height * 3) + (self.button_spacing * 2) #total height of all buttons with spacing
         start_y = (self.height - total_height) // 2        # starting coordinates to centre buttons correctly
         start_x = (self.width - self.button_width) // 2
 
         return [
-            Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", self.font, (30, 144, 255), self.text_color, (70, 160, 255)),
-            Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", self.font, (34, 139, 34), self.text_color, (60, 179, 60)),
-            Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode", self.font, (178, 34, 34), self.text_color, (220, 20, 60)),
+            Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", ),
+            Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", ),
+            Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode",),
         ]   #buttons for every game mode
 
     def run(self):        
@@ -59,17 +56,16 @@ class MainMenu:                                              # for main menu int
             pygame.display.flip()  #updates display
 
 class Button:            #used to make various buttons 
-    def __init__(self, x, y, width, height, text, font, bg_color, text_color, hover_color):
+    def __init__(self, x, y, width, height, text):
         self.rect = pygame.Rect(x, y, width, height)            #rectangle shape for button
         self.text = text
-        self.font = font                                        #various variables for properties of the buttons
-        self.bg_color = bg_color
-        self.text_color = text_color
-        self.hover_color = hover_color
+        self.font = pygame.font.SysFont("arial", 36)                                      #various variables for properties of the buttons
+        self.bg_color =(128, 128, 128)
+        self.text_color = (255, 255, 255)
 
     def draw(self, screen):
         mouse_pos = pygame.mouse.get_pos()   #mouse position
-        color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.bg_color  #hover colour
+        color = self.bg_color  #hover colour
         pygame.draw.rect(screen, color, self.rect, border_radius=12)      #draws rectangle for a button
         text_surface = self.font.render(self.text, True, self.text_color)   #renders text
         text_rect = text_surface.get_rect(center=self.rect.center)    #centres text in button
@@ -135,16 +131,11 @@ class ClassicWordle:            #class
 
         self.unrevealed_indices = [i for i in range(self.wordle_columns)]  
 
-        self.font = pygame.font.SysFont(None, 30)
         self.home_button = Button(
             x=self.screen_width - 60,  # Place it 60 pixels from the right edge
             y=20,                      # 20 pixels from the top
             width=40, height=40,       # Button dimensions
             text="🏠",                 # Unicode home icon
-            font=self.font,            # Use self.font
-            bg_color=(200, 200, 200),  # Light gray background
-            text_color=self.white,     # White text color
-            hover_color=(150, 150, 150)  # Darker gray for hover effect
         )
 
 
