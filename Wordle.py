@@ -1,83 +1,81 @@
-import pygame     #importing required libraries 
-import string     #import alphabet for key input handling
+import pygame     #importing pygame for game development
+import string     #import string for handling alphabet for key input handling
 import random     #import random for random word selection 
-import time       # import time for timed wordle
+import time       # import time for timed wordle for timings
 
-class MainMenu:
+class MainMenu:                                              # for main menu interface
     def __init__(self, screen, width, height):
         self.screen = screen
-        self.width = width
+        self.width = width                                  #initialising variables for display setup
         self.height = height
         self.font = pygame.font.SysFont("arial", 36)
-        self.clock = pygame.time.Clock()
 
-        # Colors
+        # Colours explanatory via name
         self.bg_color = (20, 20, 20)
         self.text_color = (255, 255, 255)
 
-        # Button settings
+        # Button dimensions and spacing
         self.button_width = 300
         self.button_height = 80
         self.button_spacing = 40
 
-        # Create buttons
+        # Create buttons in menu screen
         self.buttons = self.create_buttons()
 
     def create_buttons(self):
-        total_height = (self.button_height * 3) + (self.button_spacing * 2)
-        start_y = (self.height - total_height) // 2
+        total_height = (self.button_height * 3) + (self.button_spacing * 2) #total height of all buttons with spacing
+        start_y = (self.height - total_height) // 2        # starting coordinates to centre buttons correctly
         start_x = (self.width - self.button_width) // 2
 
         return [
             Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", self.font, (30, 144, 255), self.text_color, (70, 160, 255)),
             Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", self.font, (34, 139, 34), self.text_color, (60, 179, 60)),
             Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode", self.font, (178, 34, 34), self.text_color, (220, 20, 60)),
-        ]
+        ]   #buttons for every game mode
 
-    def run(self):
-        while True:
-            self.screen.fill(self.bg_color)
+    def run(self):        
+        while True:         #loop to check for button clicks and display buttons
+            self.screen.fill(self.bg_color)   #fills background with colour
 
-            for event in pygame.event.get():
+            for event in pygame.event.get():  #handles input/events
                 if event.type == pygame.QUIT:
-                    pygame.quit()
+                    pygame.quit()                  #exit program if x icon pressed
 
-                for i, button in enumerate(self.buttons):
-                    if button.is_clicked(event):
-                        if i == 0:
+                for i, button in enumerate(self.buttons):   # Iterate through all buttons
+                    if button.is_clicked(event):   #checks if any buttons have been clicked
+                        if i == 0:    # If the first button is clicked
                             print("Launching Classic Mode...")
-                            return "classic"
-                        elif i == 1:
+                            return "classic"   #string triggers classic mode
+                        elif i == 1:     # If the second button is clicked and so on
                             print("Launching Timed Mode...")
                             return "timed"
                         elif i == 2:
                             print("Launching Hard Mode...")
                             return "hard"
 
-            for button in self.buttons:
+            for button in self.buttons:    #draws every button
                 button.draw(self.screen)
 
-            pygame.display.flip()
-            self.clock.tick(60)
+            pygame.display.flip()  #updates display
 
-class Button:
+class Button:            #used to make various buttons 
     def __init__(self, x, y, width, height, text, font, bg_color, text_color, hover_color):
-        self.rect = pygame.Rect(x, y, width, height)
+        self.rect = pygame.Rect(x, y, width, height)            #rectangle shape for button
         self.text = text
-        self.font = font
+        self.font = font                                        #various variables for properties of the buttons
         self.bg_color = bg_color
         self.text_color = text_color
         self.hover_color = hover_color
 
     def draw(self, screen):
-        mouse_pos = pygame.mouse.get_pos()
-        color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.bg_color
-        pygame.draw.rect(screen, color, self.rect, border_radius=12)
-        text_surface = self.font.render(self.text, True, self.text_color)
-        text_rect = text_surface.get_rect(center=self.rect.center)
-        screen.blit(text_surface, text_rect)
+        mouse_pos = pygame.mouse.get_pos()   #mouse position
+        color = self.hover_color if self.rect.collidepoint(mouse_pos) else self.bg_color  #hover colour
+        pygame.draw.rect(screen, color, self.rect, border_radius=12)      #draws rectangle for a button
+        text_surface = self.font.render(self.text, True, self.text_color)   #renders text
+        text_rect = text_surface.get_rect(center=self.rect.center)    #centres text in button
+        screen.blit(text_surface, text_rect)    #draws text in button
 
-    def is_clicked(self, event):
+    def is_clicked(self, event):   #checks if button has been clicked
         return event.type == pygame.MOUSEBUTTONDOWN and self.rect.collidepoint(event.pos)
 
 
