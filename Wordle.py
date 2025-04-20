@@ -513,4 +513,3 @@ while True:
         game.run()
     elif selected_mode == "instructions":
         screen.fill(bg_colour)
-        draw_text("Instructions", 200, 50)
