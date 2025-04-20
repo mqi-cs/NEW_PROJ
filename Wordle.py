@@ -29,7 +29,6 @@ class MainMenu:                                              # for main menu int
             Button(start_x, start_y, self.button_width, self.button_height, "Classic Mode", ),
             Button(start_x, start_y + self.button_height + self.button_spacing, self.button_width, self.button_height, "Timed Mode", ),
             Button(start_x, start_y + 2 * (self.button_height + self.button_spacing), self.button_width, self.button_height, "Hard Mode",),
-            Button(self.width - 65, 5, 60, 30, "click me",20),   # Home button
         ]   #buttons for every game mode
 
     def run(self):        
@@ -48,8 +47,7 @@ class MainMenu:                                              # for main menu int
                             return "timed"
                         elif i == 2:
                             return "hard"
-                        elif i == 3:    # Home button
-                            return "instructions"
+              
 
             for button in self.buttons:    #draws every button
                 button.draw(self.screen)
@@ -511,5 +509,3 @@ while True:
     elif selected_mode == "timed":
         game = TimedWordle()
         game.run()
-    elif selected_mode == "instructions":
-        screen.fill(bg_colour)
