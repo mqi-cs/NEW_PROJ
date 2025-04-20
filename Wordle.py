@@ -2,7 +2,7 @@ import pygame     #importing pygame for game development
 import string     #import string for handling alphabet for key input handling
 import random     #import random for random word selection 
 import time       # import time for timed wordle for timings
-
+from wordle_list import setup_database, get_random_word, valid_guess  #importing functions from wordle_list.py for database handling
 class MainMenu:                                              # for main menu interface
     def __init__(self, screen, width, height):
         self.screen = screen
@@ -58,7 +58,7 @@ class Button:            #used to make various buttons
     def __init__(self, x, y, width, height, text,font_size=36):
         self.rect = pygame.Rect(x, y, width, height)            #rectangle shape for button
         self.text = text
-        self.font = pygame.font.SysFont("arial", font_size)                                      #various variables for properties of the buttons
+        self.font = pygame.font.SysFont("arial", font_size)            #various variables for properties of the buttons
         self.bg_color =(128, 128, 128)
         self.text_color = (255, 255, 255)
 
@@ -82,7 +82,8 @@ class ClassicWordle:            #class
     def __init__(self):           #passing self into constructor method
         pygame.init()              #initialising pygame
 
-        
+
+
         self.screen_width, self.screen_height = 400, 400   #variables for screen width and height.
 
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  #initialising display window
@@ -113,7 +114,6 @@ class ClassicWordle:            #class
 
         
         #self.wordle = self.get_random_word().upper()   #word to be guessed in uppercase
-        self.wordle = "APPLE"  # For testing purposes
 
         self.guess_list = [["" for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]  # 2d arrray to hold guesses
 
@@ -137,14 +137,14 @@ class ClassicWordle:            #class
             text="<=",                 # Unicode home icon
         )
 
+        setup_database()
+        self.wordle = get_random_word().upper()  # Get a random word from the database
 
-    def get_random_word(self):     # Open the text file containing words 
-       
-        with open('wordle_db.txt', 'r') as file:  # Open the file for reading
-            words = file.readlines()    # Read all lines in the file
-
-        five_letter_words = [word.strip() for word in words if len(word.strip()) == 5] # Filter the words to find 5-letter words
-        return random.choice(five_letter_words) if five_letter_words else "ERROR"   #Randomly choose a word and return error if none selected
+        
+        if self.wordle == "ERROR":
+            print(f"Random 5-letter word: {self.wordle}")
+        else:
+            print("No word could be selected.")
 
 
 
@@ -290,12 +290,17 @@ class ClassicWordle:            #class
 
         self.current_column = self.counter
 
-        if self.counter == 5 and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
+        guessed_word = "".join(self.guess_list[self.current_row]).upper()
+
+ 
+        if self.counter == 5 and valid_guess(guessed_word) and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
 
-            guessed_word = "".join(self.guess_list[self.current_row]).upper()
+
             
             if guessed_word == self.wordle:
+
+                self.cell_colours[self.current_row] = [self.green] * self.wordle_columns  # Set the entire row to green
 
                 self.draw_win(f"The word was {self.wordle}")
 
@@ -304,6 +309,8 @@ class ClassicWordle:            #class
                 pygame.time.delay(20000)  # Wait 2 seconds
 
                 return
+
+
 
             # Check if it's the last row and the word is not correct
             if self.current_row == self.wordle_rows - 1:
