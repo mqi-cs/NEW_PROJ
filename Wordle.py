@@ -140,13 +140,6 @@ class ClassicWordle:            #class
         setup_database()
         self.wordle = get_random_word().upper()  # Get a random word from the database
 
-        
-        if self.wordle == "ERROR":
-            print(f"Random 5-letter word: {self.wordle}")
-        else:
-            print("No word could be selected.")
-
-
 
     def hint(self):
 
@@ -301,6 +294,8 @@ class ClassicWordle:            #class
             if guessed_word == self.wordle:
 
                 self.cell_colours[self.current_row] = [self.green] * self.wordle_columns  # Set the entire row to green
+
+                pygame.display.flip()  # Update the display to show the final guess
 
                 self.draw_win(f"The word was {self.wordle}")
 

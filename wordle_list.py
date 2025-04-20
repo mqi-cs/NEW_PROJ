@@ -17,26 +17,19 @@ def setup_database():
     # Check if the table is empty
     cursor.execute('SELECT COUNT(*) FROM words')
     if cursor.fetchone()[0] == 0:
-        try:
-            # Read words from wordle_db.txt
-            with open('wordle_db.txt', 'r') as file:
-                words = [line.strip() for line in file if len(line.strip()) == 5]  # Only include 5-letter words
+   
+                     # Read words from wordle_db.txt
+        with open('wordle_db.txt', 'r') as file:
+            words = [line.strip() for line in file if len(line.strip()) == 5]  # Only include 5-letter words
 
             # Insert words into the database
-            cursor.executemany('INSERT INTO words (word) VALUES (?)', [(word,) for word in words])
-            conn.commit()
-            print(f"{len(words)} words added to the database.")
-        except FileNotFoundError:
-            print("Error: wordle_db.txt file not found.")
-    else:
-        print("Database already populated.")
+        cursor.executemany('INSERT INTO words (word) VALUES (?)', [(word,) for word in words])
+        conn.commit()
 
     conn.close()
 
 def get_random_word():
-    """
-    Retrieves a random 5-letter word from the database.
-    """
+  
     conn = sqlite3.connect('wordle.db')  # Connect to the SQLite database
     cursor = conn.cursor()
 
@@ -48,9 +41,7 @@ def get_random_word():
     return result[0] if result else None
 
 def valid_guess(word):
-    """
-    Checks if the given word exists in the database.
-    """
+  
     conn = sqlite3.connect('wordle.db')  # Connect to the SQLite database
     cursor = conn.cursor()
 
