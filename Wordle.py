@@ -394,11 +394,12 @@ class TimedWordle(ClassicWordle):
     def counter_condition(self, event):
 
         self.current_column = self.counter
+        guessed_word = "".join(self.guess_list[self.current_row]).upper()
 
-        if self.counter == 5 and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
+        if self.counter == 5 and valid_guess(guessed_word) and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
 
-            guessed_word = "".join(self.guess_list[self.current_row]).upper()
+            self.guessed_word = "".join(self.guess_list[self.current_row]).upper()
 
             if guessed_word == self.wordle:
 
@@ -450,6 +451,9 @@ class TimedWordle(ClassicWordle):
         self.current_row = 0
         self.current_column = 0
         self.counter = 0
+        self.wordle_rows = 6
+
+    
 
         # Reset hint counter
         self.hint_counter = 1
@@ -458,6 +462,7 @@ class TimedWordle(ClassicWordle):
         self.screen_width, self.screen_height = 400, 400  # Default dimensions
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))  # Reset screen size
 
+        self.cell_height = (self.screen_height - 2 * self.margin) // self.wordle_rows
 
 
         # Redraw the grid
