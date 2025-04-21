@@ -289,13 +289,12 @@ class ClassicWordle:            #class
         if self.counter == 5 and valid_guess(guessed_word) and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
 
-
             
             if guessed_word == self.wordle:
 
                 self.cell_colours[self.current_row] = [self.green] * self.wordle_columns  # Set the entire row to green
 
-                pygame.display.flip()  # Update the display to show the final guess
+                self.draw_grid  # Update the display to show the final guess
 
                 self.draw_win(f"The word was {self.wordle}")
 
@@ -441,7 +440,7 @@ class TimedWordle(ClassicWordle):
             
     def reset_game(self):
         # Generate a new Wordle
-        self.wordle = self.get_random_word().upper()
+        self.wordle = get_random_word().upper()
 
         # Reset the grid
         self.guess_list = [["" for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]
