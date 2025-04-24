@@ -388,7 +388,6 @@ class TimedWordle(ClassicWordle):
         self.draw_text(f"Rounds won: {self.match_counter}", 200, 280)
         pygame.display.flip()
         pygame.time.delay(3000)
-        self.running = False
 
 
     def counter_condition(self, event):
