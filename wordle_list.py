@@ -1,16 +1,20 @@
 import sqlite3
 import random
 
-def setup_database(length=5):
+def setup_database(guess_length=5):
 
     conn = sqlite3.connect('wordle.db')  # Connect to the SQLite database
     cursor = conn.cursor()
+
+
+    # Drop the existing table if it exists
+    cursor.execute('DROP TABLE IF EXISTS words')
 
     # Create the table if it doesn't exist
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS words (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            word TEXT NOT NULL CHECK(length(word) = length)    
+            word TEXT NOT NULL
         )
     ''')                   # Create the words table with a 5-letter word constraint
 
@@ -20,7 +24,7 @@ def setup_database(length=5):
    
                      # Read words from wordle_db.txt
         with open('wordle_db.txt', 'r') as file:
-            words = [line.strip() for line in file if len(line.strip()) == length]  # Only include 5-letter words
+            words = [line.strip() for line in file if len(line.strip()) == guess_length]  # Only include 5-letter words
 
             # Insert words into the database
         cursor.executemany('INSERT INTO words (word) VALUES (?)', [(word,) for word in words])

@@ -100,9 +100,9 @@ class ClassicWordle:            #class
         self.yellow = (255, 255, 0)
         self.grey = (128, 128, 128)
         self.purple = (128, 0, 128)
-
+        
         self.wordle_columns = 6    # dimesnions for wordle grid
-        self.wordle_rows = 6
+        self.wordle_rows = 7
         self.margin = 50    # gap between edges of screen and grid
 
        
@@ -314,12 +314,6 @@ class ClassicWordle:            #class
 
             if self.hint_counter == 0:      #make sure max 1 hint per guess
                 self.hint_counter += 1   #increment hint counter to allow for hint again
-        
-      
-
-        
-
-        
 
     
     
