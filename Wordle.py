@@ -100,8 +100,8 @@ class ClassicWordle:            #class
         self.yellow = (255, 255, 0)
         self.grey = (128, 128, 128)
         self.purple = (128, 0, 128)
-        
-        self.wordle_columns = 5    # dimesnions for wordle grid
+
+        self.wordle_columns = 6    # dimesnions for wordle grid
         self.wordle_rows = 6
         self.margin = 50    # gap between edges of screen and grid
 
@@ -134,7 +134,7 @@ class ClassicWordle:            #class
             text="<=",                 # Unicode home icon
         )
 
-        setup_database()
+        setup_database(self.wordle_columns)
         self.wordle = get_random_word().upper()  # Get a random word from the database
 
 
@@ -257,7 +257,7 @@ class ClassicWordle:            #class
         elif event.key == pygame.K_1:     #hint button
             self.hint()                       #calls hint function to add letter to grid and colour it purple
 
-        elif event.key in self.alphabet_keys and self.counter != 5:  #if key pressed is in alphabet keys and counter not at max
+        elif event.key in self.alphabet_keys and self.counter != self.wordle_columns:  #if key pressed is in alphabet keys and counter not at max
             self.guess_list[self.current_row][self.counter] = self.alphabet_keys[event.key]    #add letter to guess list
             self.counter += 1        #increment counter to next column
             self.draw_grid()   ##draw grid with new letter
@@ -278,7 +278,7 @@ class ClassicWordle:            #class
         guessed_word = "".join(self.guess_list[self.current_row]).upper()
 
  
-        if self.counter == 5 and valid_guess(guessed_word) and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
+        if self.counter == self.wordle_columns and valid_guess(guessed_word) and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
 
             
@@ -314,6 +314,12 @@ class ClassicWordle:            #class
 
             if self.hint_counter == 0:      #make sure max 1 hint per guess
                 self.hint_counter += 1   #increment hint counter to allow for hint again
+        
+      
+
+        
+
+        
 
     
     
@@ -387,7 +393,7 @@ class TimedWordle(ClassicWordle):
         self.current_column = self.counter
         guessed_word = "".join(self.guess_list[self.current_row]).upper()
 
-        if self.counter == 5 and valid_guess(guessed_word) and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
+        if self.counter == self.wordle_columns and valid_guess(guessed_word) and event.key == pygame.K_RETURN:          #enters guess when all letters are entered and enter key pressed
             self.colour()                                                   #checks postions of letters and colours them accordingly
 
             self.guessed_word = "".join(self.guess_list[self.current_row]).upper()
