@@ -112,9 +112,6 @@ class ClassicWordle:            #class
 
         self.running = True  # used to check if game is running for input handling
 
-        
-        #self.wordle = self.get_random_word().upper()   #word to be guessed in uppercase
-
         self.guess_list = [["" for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]  # 2d arrray to hold guesses
 
         self.cell_colours = [[self.black for _ in range(self.wordle_columns)] for _ in range(self.wordle_rows)]  #default all blocks initially to black
@@ -142,33 +139,28 @@ class ClassicWordle:            #class
 
 
     def hint(self):
-
-        if self.hint_counter > 0 and len(self.unrevealed_indices) > 0 and (self.current_row)>0 :  # Check if hints are available and unrevealed indices exist
+                                                             # Check if hints are available and unrevealed indices exist
+        if self.hint_counter > 0 and len(self.unrevealed_indices) > 0 and (self.current_row)>0 :  
 
             i = random.choice(self.unrevealed_indices)
-
 
             for cycle in range(self.current_row):
 
 
                 if self.cell_colours[cycle][i] == self.green: 
-                    
-                    self.unrevealed_indices.remove(i) if i in self.unrevealed_indices else None # Remove the index from the list to avoid duplicates
+                                                                # Remove the index from the list to avoid duplicates 
+                    self.unrevealed_indices.remove(i) if i in self.unrevealed_indices else None 
     
-
                     self.hint()
 
                 else: 
 
                     self.guess_list[self.current_row][i] = self.wordle[i]
                     self.cell_colours[self.current_row][i] = self.purple  #  color to show it's a hint
-
-                    
-                    self.unrevealed_indices.remove(i)  if i in self.unrevealed_indices else None # Remove the index from the list to avoid duplicate
+                                                                      # Remove the index from the list to avoid duplicate
+                    self.unrevealed_indices.remove(i)  if i in self.unrevealed_indices else None 
                     self.hint_counter -= 1
-
         else:
-
             self.draw_win("No hints available")  # Display a message if no hints are left
             pygame.display.flip()
             pygame.time.delay(500)  # Wait 
