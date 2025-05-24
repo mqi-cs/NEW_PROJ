@@ -55,3 +55,4 @@ def valid_guess(word):
     conn.close()
 
     return result > 0  # Return True if the word exists, otherwise False
+

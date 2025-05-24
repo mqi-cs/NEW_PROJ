@@ -137,6 +137,19 @@ class ClassicWordle:            #class
         setup_database(self.wordle_columns)
         self.wordle = get_random_word().upper()  # Get a random word from the database
 
+    def wordle_bot(self):
+        
+        first_guess = get_random_word().upper()  # Get a random word from the database
+
+        for i in range(self.wordle_columns):
+            self.guess_list[self.current_row][self.counter] = first_guess[i]    #add letter to guess list
+            self.counter += 1        #increment counter to next column
+            self.draw_grid()   ##draw grid with new letter
+
+        self.colour() 
+
+        pass
+
 
     def hint(self):
                                                              # Check if hints are available and unrevealed indices exist
