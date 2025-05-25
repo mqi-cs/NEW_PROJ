@@ -148,7 +148,35 @@ class ClassicWordle:            #class
 
         self.colour() 
 
-        pass
+    def guessing_alg(self):
+
+        bot_counter = 0
+
+        if bot_counter == 0:
+
+            return get_random_word().upper()  # Get a random word from the database
+
+        else:
+
+            for i in range(self.wordle_columns):
+
+            if cell_colours[self.current_row][i] == self.green:
+
+                specific_guess(self.guess_list[self.current_row][i],1) 
+
+            elif cell_colours[self.current_row][i] == self.grey:
+
+                specific_guess(self.guess_list[self.current_row][i],0)
+
+                
+
+
+
+
+
+
+
+
 
 
     def hint(self):
