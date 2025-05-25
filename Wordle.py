@@ -160,13 +160,15 @@ class ClassicWordle:            #class
 
             for i in range(self.wordle_columns):
 
-            if cell_colours[self.current_row][i] == self.green:
+                if cell_colours[self.current_row][i] == self.green:
 
-                specific_guess(self.guess_list[self.current_row][i],1) 
+                    specific_guess(self.guess_list[self.current_row][i],1) 
 
-            elif cell_colours[self.current_row][i] == self.grey:
+                elif cell_colours[self.current_row][i] == self.grey:
 
-                specific_guess(self.guess_list[self.current_row][i],0)
+                    specific_guess(self.guess_list[self.current_row][i],0)
+
+            
 
                 
 
