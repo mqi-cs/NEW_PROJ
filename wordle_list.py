@@ -56,18 +56,24 @@ def valid_guess(word):
 
     return result > 0  # Return True if the word exists, otherwise False
 
-def specific_word(letter,bool):
+def specific_word(letter,digit,bool_val):
 
     conn = sqlite3.connect('wordle.db')  # Connect to the SQLite database
     cursor = conn.cursor()
 
+    pattern = '_' * digit + letter + '%'
 
-    cursor.execute("SELECT * FROM users WHERE name LIKE '_x%'")
+    if bool_val ==1 :
 
+        cursor.execute('SELECT word FROM words WHERE word LIKE ? ORDER BY RANDOM() LIMIT 1', (pattern,))
+        conn.close()
+        return cursor.fetchone()
+        
+    
 
-    cursor.execute("DELETE FROM users WHERE name LIKE '__x%'")
-    conn.commit()
+    elif bool_val == 0:
 
+        cursor.execute("DELETE FROM words WHERE word LIKE ?", (pattern,))
+        conn.commit()
 
-
-    return result 
+    
