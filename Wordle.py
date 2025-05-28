@@ -2,7 +2,7 @@ import pygame     #importing pygame for game development
 import string     #import string for handling alphabet for key input handling
 import random     #import random for random word selection 
 import time       # import time for timed wordle for timings
-from wordle_list import setup_database, get_random_word, valid_guess  #importing functions from wordle_list.py for database handling
+from wordle_list import setup_database, get_random_word, valid_guess,specific_word  #importing functions from wordle_list.py for database handling
 class MainMenu:                                              # for main menu interface
     def __init__(self, screen, width, height):
         self.screen = screen
@@ -150,34 +150,33 @@ class ClassicWordle:            #class
 
     def guessing_alg(self):
 
-        bot_counter = 0
+        while self.current_row < self.wordle_rows or self.guess_list[self.current_row] != self.wordle:  # Loop until the word is guessed or all rows are used
 
-        if bot_counter == 0:
+            bot_guess = get_random_word().upper()  # Get a random word from the database
 
-            return get_random_word().upper()  # Get a random word from the database
+            for i in range(len(bot_guess)):
 
-        else:
+
+                self.guess_list[self.current_row][i] = bot_guess[i]    #add letter to guess list
+                self.draw_grid()   ##draw grid with new letter
+
+
+            self.colour()
+
 
             for i in range(self.wordle_columns):
 
-                if cell_colours[self.current_row][i] == self.green:
+                if self.cell_colours[self.current_row][i] == self.green:
 
-                    specific_guess(self.guess_list[self.current_row][i],1) 
+                    specific_word(self.guess_list[self.current_row][i],1) 
 
-                elif cell_colours[self.current_row][i] == self.grey:
+                elif self.cell_colours[self.current_row][i] == self.grey:
 
-                    specific_guess(self.guess_list[self.current_row][i],0)
+                    specific_word(self.guess_list[self.current_row][i],0)
 
             
 
-                
-
-
-
-
-
-
-
+            pygame.time.delay(20000)
 
 
 
