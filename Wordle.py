@@ -101,8 +101,8 @@ class ClassicWordle:            #class
         self.grey = (128, 128, 128)
         self.purple = (128, 0, 128)
         
-        self.wordle_columns = 6    # dimesnions for wordle grid
-        self.wordle_rows = 7
+        self.wordle_columns = 5   # dimesnions for wordle grid
+        self.wordle_rows = 6
         self.margin = 50    # gap between edges of screen and grid
 
        
@@ -137,20 +137,11 @@ class ClassicWordle:            #class
         setup_database(self.wordle_columns)
         self.wordle = get_random_word().upper()  # Get a random word from the database
 
-    def wordle_bot(self):
-        
-        first_guess = get_random_word().upper()  # Get a random word from the database
 
-        for i in range(self.wordle_columns):
-            self.guess_list[self.current_row][self.counter] = first_guess[i]    #add letter to guess list
-            self.counter += 1        #increment counter to next column
-            self.draw_grid()   ##draw grid with new letter
-
-        self.colour() 
 
     def guessing_alg(self):
 
-        while self.current_row < self.wordle_rows or self.guess_list[self.current_row] != self.wordle:  # Loop until the word is guessed or all rows are used
+        while self.current_row < self.wordle_rows :  # Loop until the word is guessed or all rows are used
 
             bot_guess = get_random_word().upper()  # Get a random word from the database
 
@@ -159,7 +150,10 @@ class ClassicWordle:            #class
 
                 self.guess_list[self.current_row][i] = bot_guess[i]    #add letter to guess list
                 self.draw_grid()   ##draw grid with new letter
+                pygame.display.flip()  # Update the display
 
+                pygame.time.delay(2000)
+            pygame.time.delay(1000)  # Wait for 1 second before checking the guess
 
             self.colour()
 
@@ -168,13 +162,14 @@ class ClassicWordle:            #class
 
                 if self.cell_colours[self.current_row][i] == self.green:
 
-                    specific_word(self.guess_list[self.current_row][i],1) 
+                    specific_word(self.guess_list[self.current_row][i],i,1) 
 
                 elif self.cell_colours[self.current_row][i] == self.grey:
 
-                    specific_word(self.guess_list[self.current_row][i],0)
+                    specific_word(self.guess_list[self.current_row][i],i,0)
 
-            
+            self.current_row += 1                            # next row and column reset for next guess
+            self.current_column = 0            
 
             pygame.time.delay(20000)
 
@@ -298,6 +293,10 @@ class ClassicWordle:            #class
 
         elif event.key == pygame.K_1:     #hint button
             self.hint()                       #calls hint function to add letter to grid and colour it purple
+
+        elif event.key == pygame.K_2:  #if enter key pressed
+            self.guessing_alg()
+
 
         elif event.key in self.alphabet_keys and self.counter != self.wordle_columns:  #if key pressed is in alphabet keys and counter not at max
             self.guess_list[self.current_row][self.counter] = self.alphabet_keys[event.key]    #add letter to guess list
