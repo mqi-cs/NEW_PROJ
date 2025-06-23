@@ -173,36 +173,32 @@ class ClassicWordle:            #class
 
             pygame.time.delay(20000)
 
-
-
     def hint(self):
-                                                             # Check if hints are available and unrevealed indices exist
-        if self.hint_counter > 0 and len(self.unrevealed_indices) > 0 and (self.current_row)>0 :  
+        # Only give a hint if available and there are unrevealed indices
+        if self.hint_counter > 0 and len(self.unrevealed_indices) > 0 and self.current_row > 0:  # <--- Removed (self.current_row)>0 check
+            # Pick a random unrevealed index that is not already green in any previous row
+            valid_indices = []
+            for i in self.unrevealed_indices:
+                already_green = any(self.cell_colours[cycle][i] == self.green for cycle in range(self.current_row))
+                if not already_green:
+                    valid_indices.append(i)
+            if not valid_indices:
+                self.draw_win("No hints available")
+                pygame.display.flip()
+                pygame.time.delay(500)
+                return
 
-            i = random.choice(self.unrevealed_indices)
-
-            for cycle in range(self.current_row):
-
-
-                if self.cell_colours[cycle][i] == self.green: 
-                                                                # Remove the index from the list to avoid duplicates 
-                    self.unrevealed_indices.remove(i) if i in self.unrevealed_indices else None 
-    
-                    self.hint()
-
-                else: 
-
-                    self.guess_list[self.current_row][i] = self.wordle[i]
-                    self.cell_colours[self.current_row][i] = self.purple  #  color to show it's a hint
-                                                                      # Remove the index from the list to avoid duplicate
-                    self.unrevealed_indices.remove(i)  if i in self.unrevealed_indices else None 
-                    self.hint_counter -= 1
-        else:
-            self.draw_win("No hints available")  # Display a message if no hints are left
+            i = random.choice(valid_indices)
+            self.guess_list[self.current_row][i] = self.wordle[i]
+            self.cell_colours[self.current_row][i] = self.purple
+            self.unrevealed_indices.remove(i)
+            self.hint_counter -= 1
+            self.draw_grid()
             pygame.display.flip()
-            pygame.time.delay(500)  # Wait 
-
-
+        else:
+            self.draw_win("No hints available")
+            pygame.display.flip()
+            pygame.time.delay(500)
 
 
     def colour(self):
