@@ -157,6 +157,9 @@ class ClassicWordle:            #class
             pygame.time.delay(1000)  # Wait for 1 second before checking the guess
 
             self.colour()
+            self.draw_grid()
+            pygame.display.flip()  # Update the display
+        
 
 
             for i in range(self.wordle_columns):
