@@ -66,8 +66,9 @@ def specific_word(letter,digit,bool_val):
     if bool_val ==1 :
 
         cursor.execute('SELECT word FROM words WHERE word LIKE ? ORDER BY RANDOM() LIMIT 1', (pattern,))
+        result = cursor.fetchone()
         conn.close()
-        return cursor.fetchone()
+        return result
         
     
 
