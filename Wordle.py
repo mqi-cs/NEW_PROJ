@@ -153,6 +153,7 @@ class ClassicWordle:            #class
                 pygame.display.flip()  # Update the display
 
                 pygame.time.delay(2000)
+
             pygame.time.delay(1000)  # Wait for 1 second before checking the guess
 
             self.colour()
@@ -168,10 +169,12 @@ class ClassicWordle:            #class
 
                     specific_word(self.guess_list[self.current_row][i],i,0)
 
+
             self.current_row += 1                            # next row and column reset for next guess
             self.current_column = 0            
+            
 
-            pygame.time.delay(20000)
+            pygame.time.delay(2000)
 
     def hint(self):
         # Only give a hint if available and there are unrevealed indices
