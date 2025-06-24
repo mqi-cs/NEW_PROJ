@@ -70,8 +70,6 @@ def specific_word(letter,digit,bool_val):
         conn.close()
         return result
         
-    
-
     elif bool_val == 0:
 
         cursor.execute("DELETE FROM words WHERE word LIKE ?", (pattern,))

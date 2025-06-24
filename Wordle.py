@@ -143,38 +143,47 @@ class ClassicWordle:            #class
 
         while self.current_row < self.wordle_rows :  # Loop until the word is guessed or all rows are used
 
-            bot_guess = get_random_word().upper()  # Get a random word from the database
+            while self.current_row < 1:
 
-            for i in range(len(bot_guess)):
+                bot_guess = get_random_word().upper()  # Get a random word from the database
+
+                for i in range(len(bot_guess)):
 
 
-                self.guess_list[self.current_row][i] = bot_guess[i]    #add letter to guess list
-                self.draw_grid()   ##draw grid with new letter
+                    self.guess_list[self.current_row][i] = bot_guess[i]    #add letter to guess list
+                    self.draw_grid()   ##draw grid with new letter
+                    pygame.display.flip()  # Update the display
+
+                    pygame.time.delay(500)
+
+                pygame.time.delay(500)  # Wait for 1 second before checking the guess
+
+                self.colour()
+                self.draw_grid()
                 pygame.display.flip()  # Update the display
-
-                pygame.time.delay(500)
-
-            pygame.time.delay(500)  # Wait for 1 second before checking the guess
-
-            self.colour()
-            self.draw_grid()
-            pygame.display.flip()  # Update the display
         
-
+                self.current_row += 1                            # next row and column reset for next guess
+                self.current_column = 0    
 
             for i in range(self.wordle_columns):
 
-                if self.cell_colours[self.current_row][i] == self.green:
-
-                    specific_word(self.guess_list[self.current_row][i],i,1) 
-
-                elif self.cell_colours[self.current_row][i] == self.grey:
-
-                    specific_word(self.guess_list[self.current_row][i],i,0)
+                for y in range(self.current_row):
 
 
-            self.current_row += 1                            # next row and column reset for next guess
-            self.current_column = 0            
+                    if self.cell_colours[y][i] == self.green:
+
+                        specific_word(self.guess_list[y][i],i,1) 
+
+                    elif self.cell_colours[y][i] == self.grey:
+
+                        specific_word(self.guess_list[y][i],i,0)
+
+                    self.colour()
+                    self.draw_grid()
+                    pygame.display.flip()  # Update the display
+
+                    self.current_row += 1                            # next row and column reset for next guess
+                    self.current_column = 0            
             
     def hint(self):
         # Only give a hint if available and there are unrevealed indices
