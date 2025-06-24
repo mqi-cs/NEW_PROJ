@@ -152,9 +152,9 @@ class ClassicWordle:            #class
                 self.draw_grid()   ##draw grid with new letter
                 pygame.display.flip()  # Update the display
 
-                pygame.time.delay(2000)
+                pygame.time.delay(500)
 
-            pygame.time.delay(1000)  # Wait for 1 second before checking the guess
+            pygame.time.delay(500)  # Wait for 1 second before checking the guess
 
             self.colour()
             self.draw_grid()
@@ -176,9 +176,6 @@ class ClassicWordle:            #class
             self.current_row += 1                            # next row and column reset for next guess
             self.current_column = 0            
             
-
-            pygame.time.delay(2000)
-
     def hint(self):
         # Only give a hint if available and there are unrevealed indices
         if self.hint_counter > 0 and len(self.unrevealed_indices) > 0 and self.current_row > 0:  # <--- Removed (self.current_row)>0 check
