@@ -172,7 +172,6 @@ class ClassicWordle:            #class
 
             
             self.colour()
-            self.draw_grid()
             pygame.display.flip()  # Update the display
             pygame.time.delay(2000)  # Show the colored guess for a moment
     
