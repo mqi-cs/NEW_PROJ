@@ -143,27 +143,19 @@ class ClassicWordle:            #class
 
         while self.current_row < self.wordle_rows :  # Loop until the word is guessed or all rows are used
 
-            while self.current_row < 1:
+            bot_guess = get_random_word().upper()  # Get a random word from the database
 
-                bot_guess = get_random_word().upper()  # Get a random word from the database
-
-                for i in range(len(bot_guess)):
+            for i in range(len(bot_guess)):
 
 
-                    self.guess_list[self.current_row][i] = bot_guess[i]    #add letter to guess list
-                    self.draw_grid()   ##draw grid with new letter
-                    pygame.display.flip()  # Update the display
+                self.guess_list[self.current_row][i] = bot_guess[i]    #add letter to guess list
 
-                    pygame.time.delay(500)
 
-                pygame.time.delay(500)  # Wait for 1 second before checking the guess
+                pygame.time.delay(500)
 
-                self.colour()
-                self.draw_grid()
-                pygame.display.flip()  # Update the display
-        
-                self.current_row += 1                            # next row and column reset for next guess
-                self.current_column = 0    
+            pygame.time.delay(500)  # Wait for 1 second before checking the guess
+
+  
 
             for i in range(self.wordle_columns):
 
@@ -178,13 +170,19 @@ class ClassicWordle:            #class
 
                         specific_word(self.guess_list[y][i],i,0)
 
-                    self.colour()
-                    self.draw_grid()
-                    pygame.display.flip()  # Update the display
-
-                    self.current_row += 1                            # next row and column reset for next guess
-                    self.current_column = 0            
             
+            self.colour()
+            self.draw_grid()
+            pygame.display.flip()  # Update the display
+            pygame.time.delay(2000)  # Show the colored guess for a moment
+    
+            self.current_row += 1                            # next row and column reset for next guess
+            self.current_column = 0    
+
+
+
+
+
     def hint(self):
         # Only give a hint if available and there are unrevealed indices
         if self.hint_counter > 0 and len(self.unrevealed_indices) > 0 and self.current_row > 0:  # <--- Removed (self.current_row)>0 check
