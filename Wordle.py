@@ -101,8 +101,8 @@ class ClassicWordle:            #class
         self.grey = (128, 128, 128)
         self.purple = (128, 0, 128)
         
-        self.wordle_columns = 6   # dimesnions for wordle grid
-        self.wordle_rows = 8
+        self.wordle_columns = 5   # dimesnions for wordle grid
+        self.wordle_rows = 6
         self.margin = 50    # gap between edges of screen and grid
 
        
@@ -158,11 +158,11 @@ class ClassicWordle:            #class
 
                     if self.cell_colours[y][i] == self.green:
 
-                        specific_word(self.guess_list[y][i],i,1) 
+                        specific_word(self.guess_list[y][i],i,1,self.wordle_columns) 
 
                     elif self.cell_colours[y][i] == self.grey:
 
-                        specific_word(self.guess_list[y][i],i,0)
+                        specific_word(self.guess_list[y][i],i,0,self.wordle_columns)
 
             
             self.colour()

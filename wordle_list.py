@@ -57,11 +57,12 @@ def valid_guess(word):
 
     return result > 0  # Return True if the word exists, otherwise False
 
-def specific_word(letter,digit,bool_val):
+def specific_word(letter,digit,bool_val,wordle_length=5):
 
     conn = sqlite3.connect('wordle.db')  # Connect to the SQLite database
     cursor = conn.cursor()
     
+    wordle_length=wordle_length-1
     pattern = '_' * digit + letter + '_' * (4 - digit)
 
     if bool_val ==1 :
