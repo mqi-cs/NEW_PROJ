@@ -1,5 +1,6 @@
 import sqlite3
 import random
+from unicodedata import digit
 
 def setup_database(guess_length=5):
 
@@ -60,9 +61,8 @@ def specific_word(letter,digit,bool_val):
 
     conn = sqlite3.connect('wordle.db')  # Connect to the SQLite database
     cursor = conn.cursor()
-
     
-    pattern = '_' * digit + letter + '%'
+    pattern = '_' * digit + letter + '_' * (4 - digit)
 
     if bool_val ==1 :
 
