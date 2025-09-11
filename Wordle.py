@@ -151,12 +151,6 @@ class ClassicWordle:            #class
                 self.guess_list[self.current_row][i] = bot_guess[i]    #add letter to guess list
 
 
-                pygame.time.delay(500)
-
-            pygame.time.delay(500)  # Wait for 1 second before checking the guess
-
-  
-
             for i in range(self.wordle_columns):
 
                 for y in range(self.current_row):
@@ -173,7 +167,7 @@ class ClassicWordle:            #class
             
             self.colour()
             pygame.display.flip()  # Update the display
-            pygame.time.delay(2000)  # Show the colored guess for a moment
+            pygame.time.delay(750)  # Show the colored guess for a moment
     
             self.current_row += 1                            # next row and column reset for next guess
             self.current_column = 0    

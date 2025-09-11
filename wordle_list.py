@@ -61,14 +61,13 @@ def specific_word(letter,digit,bool_val):
     conn = sqlite3.connect('wordle.db')  # Connect to the SQLite database
     cursor = conn.cursor()
 
+    
     pattern = '_' * digit + letter + '%'
 
     if bool_val ==1 :
 
-        cursor.execute('SELECT word FROM words WHERE word LIKE ? ORDER BY RANDOM() LIMIT 1', (pattern,))
-        result = cursor.fetchone()
-        conn.close()
-        return result
+        cursor.execute("DELETE FROM words WHERE word NOT LIKE ?", (pattern,))
+        conn.commit()
         
     elif bool_val == 0:
 
