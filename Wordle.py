@@ -102,7 +102,7 @@ class ClassicWordle:            #class
         self.purple = (128, 0, 128)
         
         self.wordle_columns = 5   # dimesnions for wordle grid
-        self.wordle_rows = 6
+        self.wordle_rows = 10
         self.margin = 50    # gap between edges of screen and grid
 
        
