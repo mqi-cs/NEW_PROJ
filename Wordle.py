@@ -2,7 +2,7 @@ import pygame     #importing pygame for game development
 import string     #import string for handling alphabet for key input handling
 import random     #import random for random word selection 
 import time       # import time for timed wordle for timings
-from wordle_list import setup_database, get_random_word, valid_guess,specific_word  #importing functions from wordle_list.py for database handling
+from wordle_list import setup_database, setup_database_validity_only, get_random_word, valid_guess,specific_word  #importing functions from wordle_list.py for database handling
 class MainMenu:                                              # for main menu interface
     def __init__(self, screen, width, height):
         self.screen = screen
