@@ -167,13 +167,12 @@ class ClassicWordle:            #class
             
             self.colour()
             pygame.display.flip()  # Update the display
-            pygame.time.delay(750)  # Show the colored guess for a moment
+            pygame.time.delay(350)  # Show the colored guess for a moment
     
+
+
             self.current_row += 1                            # next row and column reset for next guess
             self.current_column = 0    
-
-
-
 
 
     def hint(self):
